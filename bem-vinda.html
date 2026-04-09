@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bem-vinda ao Doce Lucro — Seu Painel Financeiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --caramelo: #7C4A2D;
+  --creme: #F5EDD6;
+  --terracota: #B85C38;
+  --cacau: #1E0F05;
+  --baunilha: #FDF8EF;
+  --dourado: #C9973A;
+  --cinza: #7A6B60;
+  --verde: #2D7C4A;
+  --ff-display: 'Poppins', sans-serif;
+  --ff-body: 'Inter', sans-serif;
+  --grad-gold: linear-gradient(135deg, #c9973a 0%, #e8b84b 100%);
+  --grad-dark: linear-gradient(135deg, #1E0F05 0%, #3a1a08 100%);
+  --grad-btn: linear-gradient(135deg, #c9690f 0%, #b85c38 100%);
+  --radius-pill: 100px;
+  --radius-lg: 24px;
+  --radius: 16px;
+  --radius-sm: 8px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--ff-body); background: var(--baunilha); color: var(--cacau); }
+
+/* HERO */
+.hero {
+  background: var(--grad-dark); min-height: 100vh; display: flex;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 80px 24px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -120px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(201,151,58,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(184,92,56,0.15) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; max-width: 720px; }
+.hero-badge {
+  display: inline-block; background: rgba(201,151,58,0.15); border: 1px solid rgba(201,151,58,0.4);
+  color: var(--dourado); border-radius: var(--radius-pill); padding: 6px 20px;
+  font-family: var(--ff-display); font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 32px;
+}
+.hero-logo {
+  width: 88px; height: 88px; background: var(--grad-gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 40px;
+  margin: 0 auto 32px; box-shadow: 0 12px 40px rgba(201,151,58,0.4);
+}
+.hero h1 {
+  font-family: var(--ff-display); font-size: 52px; font-weight: 900; color: #fff;
+  line-height: 1.12; margin-bottom: 22px; letter-spacing: -1px;
+}
+.hero h1 span { color: var(--dourado); display: block; }
+.hero p {
+  font-size: 18px; color: rgba(255,255,255,0.65); line-height: 1.7;
+  max-width: 560px; margin: 0 auto 40px;
+}
+.hero-divider {
+  width: 60px; height: 3px; background: var(--grad-gold); border-radius: 2px;
+  margin: 0 auto 40px;
+}
+.hero-stats { display: flex; justify-content: center; gap: 48px; margin-bottom: 48px; flex-wrap: wrap; }
+.hero-stat .num {
+  font-family: var(--ff-display); font-size: 36px; font-weight: 900;
+  background: var(--grad-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; display: block; line-height: 1;
+}
+.hero-stat .lbl { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 5px; }
+.btn-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--grad-btn); color: #fff; border: none; border-radius: var(--radius-pill);
+  padding: 18px 40px; font-family: var(--ff-display); font-size: 17px; font-weight: 800;
+  cursor: pointer; text-decoration: none; box-shadow: 0 8px 28px rgba(184,92,56,0.4);
+  transition: opacity 0.2s, transform 0.15s; letter-spacing: 0.3px;
+}
+.btn-cta:hover { opacity: 0.9; transform: translateY(-2px); }
+.btn-cta-arrow { font-size: 20px; }
+
+/* SECTION */
+section { padding: 96px 24px; }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-badge {
+  display: inline-block; background: rgba(201,151,58,0.12); border: 1px solid rgba(201,151,58,0.3);
+  color: var(--dourado); border-radius: var(--radius-pill); padding: 5px 16px;
+  font-family: var(--ff-display); font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 18px;
+}
+.section-title {
+  font-family: var(--ff-display); font-size: 38px; font-weight: 900; color: var(--cacau);
+  line-height: 1.15; margin-bottom: 14px;
+}
+.section-title span { color: var(--terracota); }
+.section-desc { font-size: 17px; color: var(--cinza); line-height: 1.7; max-width: 540px; margin-bottom: 56px; }
+
+/* O QUE E O PAINEL */
+.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.feature-card {
+  background: #fff; border-radius: var(--radius); padding: 32px 30px;
+  border: 1.5px solid #f0e6d4; box-shadow: 0 2px 16px rgba(30,15,5,0.07);
+  display: flex; gap: 20px; align-items: flex-start;
+}
+.feature-icon {
+  width: 56px; height: 56px; border-radius: var(--radius-sm); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 26px;
+}
+.feature-icon.gold { background: rgba(201,151,58,0.13); }
+.feature-icon.green { background: rgba(45,124,74,0.1); }
+.feature-icon.orange { background: rgba(184,92,56,0.1); }
+.feature-icon.blue { background: rgba(45,92,124,0.1); }
+.feature-content h3 {
+  font-family: var(--ff-display); font-size: 17px; font-weight: 800; color: var(--cacau);
+  margin-bottom: 8px; line-height: 1.3;
+}
+.feature-content p { font-size: 14px; color: var(--cinza); line-height: 1.65; }
+
+/* COMO FUNCIONA */
+.how-section { background: var(--cacau); }
+.how-section .section-title { color: #fff; }
+.how-section .section-desc { color: rgba(255,255,255,0.5); }
+.steps-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+.step-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+  border-radius: var(--radius); padding: 28px 24px; position: relative; overflow: hidden;
+}
+.step-card::before {
+  content: attr(data-num); position: absolute; right: 14px; top: 10px;
+  font-family: var(--ff-display); font-size: 56px; font-weight: 900;
+  color: rgba(255,255,255,0.04); line-height: 1;
+}
+.step-num {
+  width: 38px; height: 38px; background: var(--grad-gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-size: 16px; font-weight: 800; color: var(--cacau);
+  margin-bottom: 18px; flex-shrink: 0;
+}
+.step-card h3 { font-family: var(--ff-display); font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 8px; line-height: 1.35; }
+.step-card p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+/* TUTORIAL LOGIN */
+.tutorial-section { background: var(--baunilha); }
+.tutorial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-bottom: 80px; }
+.tutorial-grid.reverse { direction: rtl; }
+.tutorial-grid.reverse > * { direction: ltr; }
+.tutorial-steps { display: flex; flex-direction: column; gap: 18px; }
+.tutorial-step { display: flex; gap: 18px; align-items: flex-start; }
+.tutorial-step-num {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--grad-gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-size: 14px; font-weight: 800; color: var(--cacau);
+  flex-shrink: 0; margin-top: 2px;
+}
+.tutorial-step-text h4 { font-family: var(--ff-display); font-size: 15px; font-weight: 700; color: var(--cacau); margin-bottom: 4px; }
+.tutorial-step-text p { font-size: 13.5px; color: var(--cinza); line-height: 1.6; }
+
+/* SCREEN MOCKUP */
+.screen-mockup {
+  background: var(--cacau); border-radius: var(--radius-lg); padding: 0;
+  box-shadow: 0 24px 60px rgba(30,15,5,0.2); overflow: hidden;
+}
+.screen-bar {
+  background: rgba(255,255,255,0.06); padding: 12px 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+.screen-dot { width: 10px; height: 10px; border-radius: 50%; }
+.screen-url { flex: 1; background: rgba(255,255,255,0.07); border-radius: var(--radius-pill); padding: 5px 14px; font-family: var(--ff-display); font-size: 11px; color: rgba(255,255,255,0.35); text-align: center; }
+.screen-body { padding: 20px; }
+
+/* Mockup dashboard */
+.mock-sidebar { display: flex; gap: 16px; }
+.mock-side { width: 80px; background: rgba(255,255,255,0.05); border-radius: var(--radius-sm); padding: 12px 8px; flex-shrink: 0; }
+.mock-nav-item { background: rgba(255,255,255,0.04); border-radius: 5px; height: 20px; margin-bottom: 6px; }
+.mock-nav-item.active { background: rgba(201,151,58,0.25); }
+.mock-content { flex: 1; }
+.mock-stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 10px; }
+.mock-stat { border-radius: 8px; padding: 10px 12px; }
+.mock-stat.gold { background: rgba(201,151,58,0.15); border-top: 2px solid var(--dourado); }
+.mock-stat.green { background: rgba(45,124,74,0.12); border-top: 2px solid var(--verde); }
+.mock-stat-label { height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; width: 60%; margin-bottom: 7px; }
+.mock-stat-value { height: 14px; background: rgba(255,255,255,0.35); border-radius: 3px; width: 75%; }
+.mock-chart { background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px 12px; height: 60px; display: flex; align-items: flex-end; gap: 4px; }
+.mock-bar { flex: 1; background: rgba(201,151,58,0.3); border-radius: 3px 3px 0 0; }
+
+/* Mockup login */
+.mock-login { background: #fff; border-radius: var(--radius-sm); padding: 20px; margin: 0; }
+.mock-logo-sm { width: 36px; height: 36px; background: var(--grad-gold); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.mock-login-title { font-family: var(--ff-display); font-size: 13px; font-weight: 800; color: var(--cacau); text-align: center; margin-bottom: 4px; }
+.mock-login-sub { font-size: 10px; color: var(--cinza); text-align: center; margin-bottom: 12px; }
+.mock-tabs { display: flex; background: #f3ebe0; border-radius: var(--radius-pill); padding: 3px; margin-bottom: 12px; }
+.mock-tab { flex: 1; text-align: center; padding: 5px; border-radius: var(--radius-pill); font-family: var(--ff-display); font-size: 10px; font-weight: 700; color: var(--cinza); }
+.mock-tab.active { background: var(--cacau); color: #fff; }
+.mock-field { background: #fff; border: 1.5px solid #e8dcc8; border-radius: 6px; height: 26px; margin-bottom: 8px; }
+.mock-field.focused { border-color: var(--dourado); }
+.mock-btn { background: var(--cacau); border-radius: var(--radius-pill); height: 30px; margin-top: 4px; }
+
+/* Mockup venda */
+.mock-modal { background: #fff; border-radius: var(--radius-sm); padding: 16px; }
+.mock-modal-title { height: 10px; background: #e8dcc8; border-radius: 3px; width: 40%; margin-bottom: 14px; }
+.mock-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+.mock-label { height: 7px; background: #f0e6d4; border-radius: 3px; width: 50%; margin-bottom: 5px; }
+.mock-input { height: 22px; background: #fff; border: 1.5px solid #e8dcc8; border-radius: 5px; }
+.mock-preview { height: 28px; background: #faf3e8; border-left: 3px solid var(--dourado); border-radius: 4px; margin-top: 8px; }
+.mock-btns { display: flex; gap: 6px; margin-top: 12px; }
+.mock-btn-sec { flex: 1; height: 26px; background: #f0e6d4; border-radius: var(--radius-pill); }
+.mock-btn-save { flex: 2; height: 26px; background: var(--grad-btn); border-radius: var(--radius-pill); }
+
+/* CALLOUT */
+.callout-box {
+  background: #fff; border-radius: var(--radius); padding: 24px 28px;
+  border: 1.5px solid #f0e6d4; border-left: 4px solid var(--dourado);
+  display: flex; gap: 18px; align-items: flex-start; box-shadow: 0 2px 12px rgba(30,15,5,0.06);
+}
+.callout-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+.callout-box h4 { font-family: var(--ff-display); font-size: 15px; font-weight: 800; color: var(--caramelo); margin-bottom: 6px; }
+.callout-box p { font-size: 14px; color: var(--cinza); line-height: 1.65; }
+
+/* FAQ */
+.faq-grid { display: flex; flex-direction: column; gap: 12px; }
+.faq-item {
+  background: #fff; border-radius: var(--radius); border: 1.5px solid #f0e6d4;
+  overflow: hidden; cursor: pointer;
+}
+.faq-q {
+  padding: 18px 22px; font-family: var(--ff-display); font-size: 15px; font-weight: 700;
+  color: var(--cacau); display: flex; justify-content: space-between; align-items: center; gap: 16px;
+}
+.faq-q .faq-icon { font-size: 18px; transition: transform 0.25s; flex-shrink: 0; color: var(--dourado); }
+.faq-a { padding: 0 22px; font-size: 14px; color: var(--cinza); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; }
+.faq-item.open .faq-a { padding: 0 22px 18px; max-height: 200px; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+/* CTA FINAL */
+.cta-final { background: var(--grad-dark); text-align: center; padding: 100px 24px; position: relative; overflow: hidden; }
+.cta-final::before {
+  content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(201,151,58,0.15) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-final h2 { font-family: var(--ff-display); font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 16px; line-height: 1.15; position: relative; z-index: 1; }
+.cta-final h2 span { color: var(--dourado); }
+.cta-final p { font-size: 17px; color: rgba(255,255,255,0.55); max-width: 480px; margin: 0 auto 40px; line-height: 1.65; position: relative; z-index: 1; }
+.cta-final .btn-cta { position: relative; z-index: 1; }
+
+/* FOOTER */
+footer { background: var(--cacau); padding: 40px 24px; text-align: center; }
+footer p { font-size: 13px; color: rgba(255,255,255,0.3); font-family: var(--ff-display); letter-spacing: 1px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero h1 { font-size: 36px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+  .tutorial-grid { grid-template-columns: 1fr; gap: 40px; }
+  .tutorial-grid.reverse { direction: ltr; }
+}
+@media (max-width: 600px) {
+  .hero h1 { font-size: 28px; }
+  section { padding: 64px 16px; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Exclusivo para alunas do Kit Doce Lucro</div>
+    <div class="hero-logo">🍫</div>
+    <h1>Seu dinheiro,<span>finalmente no lugar.</span></h1>
+    <p>O Painel Financeiro Doce Lucro e a ferramenta que vai te mostrar, em tempo real, quanto voce esta faturando, qual e o seu lucro real e se voce esta batendo suas metas.</p>
+    <div class="hero-divider"></div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="num">4</span>
+        <span class="lbl">Telas do painel</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">100%</span>
+        <span class="lbl">Gratuito e online</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">0</span>
+        <span class="lbl">Instalacoes necessarias</span>
+      </div>
+    </div>
+    <a href="/index.html" class="btn-cta">Acessar o Painel <span class="btn-cta-arrow">→</span></a>
+  </div>
+</section>
+
+<!-- ═══════════════ O QUE E ═══════════════ -->
+<section>
+  <div class="container">
+    <div class="section-badge">O que e o painel</div>
+    <h2 class="section-title">Tudo o que voce precisava <span>em um so lugar</span></h2>
+    <p class="section-desc">Sem planilha complicada, sem formula para decorar. Voce registra, o painel calcula tudo automaticamente.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon gold">🏠</div>
+        <div class="feature-content">
+          <h3>Dashboard com seus numeros em tempo real</h3>
+          <p>Assim que voce abre o painel, ve o faturamento do mes, o lucro liquido, quantas vendas fez e o ticket medio. Tudo calculado na hora, sem precisar fazer nada.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon orange">💰</div>
+        <div class="feature-content">
+          <h3>Registro de vendas simples e rapido</h3>
+          <p>Registre cada pedido em segundos: cliente, produto, quantidade e valor. O lucro e o custo sao calculados automaticamente. Voce tambem pode filtrar por mes para ver qualquer periodo.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon green">🍫</div>
+        <div class="feature-content">
+          <h3>Calculadora de margem por produto</h3>
+          <p>Cadastre seus produtos com os custos reais (ingredientes, embalagem e indiretos). O painel mostra sua margem de lucro em porcentagem e avisa quando ela esta baixa.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon blue">🎯</div>
+        <div class="feature-content">
+          <h3>Metas mensais com barra de progresso</h3>
+          <p>Defina quanto quer faturar cada mes. O painel mostra seu progresso com uma barra colorida: verde quando voce bateu a meta, amarelo quando esta no caminho, vermelho quando precisa de atencao.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ COMO FUNCIONA ═══════════════ -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-badge" style="background:rgba(201,151,58,0.15);border-color:rgba(201,151,58,0.35)">Como funciona</div>
+    <h2 class="section-title" style="color:#fff">Comece a usar<br>em 4 passos simples</h2>
+    <p class="section-desc">Do primeiro acesso ate os seus dados aparecendo no painel, leva menos de 5 minutos.</p>
+
+    <div class="steps-grid">
+      <div class="step-card" data-num="1">
+        <div class="step-num">1</div>
+        <h3>Crie sua conta gratuita</h3>
+        <p>Clique em "Criar conta", coloque seu e-mail e uma senha. Pronto, sua conta esta criada e protegida so para voce.</p>
+      </div>
+      <div class="step-card" data-num="2">
+        <div class="step-num">2</div>
+        <h3>Cadastre seus produtos</h3>
+        <p>Va em "Produtos" e adicione seus doces com os custos reais. O painel ja calcula a margem de cada um na hora.</p>
+      </div>
+      <div class="step-card" data-num="3">
+        <div class="step-num">3</div>
+        <h3>Registre cada venda</h3>
+        <p>Sempre que fechar um pedido, registre em "Vendas". Se o produto ja estiver no catalogo, o preco e custo preenchem automaticamente.</p>
+      </div>
+      <div class="step-card" data-num="4">
+        <div class="step-num">4</div>
+        <h3>Defina suas metas e acompanhe</h3>
+        <p>Em "Metas", coloque o valor que quer faturar em cada mes. O Dashboard vai mostrar o progresso em tempo real.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TUTORIAL PASSO A PASSO ═══════════════ -->
+<section class="tutorial-section">
+  <div class="container">
+    <div class="section-badge">Tutorial visual</div>
+    <h2 class="section-title">Aprenda a usar <span>em minutos</span></h2>
+    <p class="section-desc">Veja exatamente o que fazer em cada tela do painel, do login ao primeiro registro.</p>
+
+    <!-- Passo 1: Login -->
+    <div class="tutorial-grid">
+      <div>
+        <div class="section-badge" style="margin-bottom:14px">Passo 1</div>
+        <h3 style="font-family:var(--ff-display);font-size:26px;font-weight:900;color:var(--cacau);margin-bottom:14px;line-height:1.2">Criando sua conta e fazendo login</h3>
+        <p style="font-size:15px;color:var(--cinza);line-height:1.7;margin-bottom:28px">O painel e protegido por conta individual. Seus dados ficam salvos na nuvem e voce pode acessar de qualquer dispositivo.</p>
+        <div class="tutorial-steps">
+          <div class="tutorial-step">
+            <div class="tutorial-step-num">1</div>
+            <div class="tutorial-step-text">
+              <h4>Acesse o painel</h4>
+              <p>Clique no botao "Acessar o Painel" nesta pagina ou va diretamente para o link que esta no seu kit.</p>
+            </div>
+          </div>
+          <div class="tutorial-step">
+            <div class="tutorial-step-num">2</div>
+            <div class="tutorial-step-text">
+              <h4>Clique em "Criar conta"</h4>
+              <p>Na primeira vez, clique na aba "Criar conta". Digite seu e-mail, uma senha (minimo 6 caracteres) e seu nome.</p>
+            </div>
+          </div>
+          <div class="tutorial-step">
+            <div class="tutorial-step-num">3</div>
+            <div class="tutorial-step-text">
+              <h4>Nas proximas vezes, so use "Entrar"</h4>
+              <p>Depois da conta criada, sempre use a aba "Entrar" com seu e-mail e senha. O painel vai carregar seus dados automaticamente.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="screen-mockup">
+          <div class="screen-bar">
+            <div class="screen-dot" style="background:#ff5f56"></div>
+            <div class="screen-dot" style="background:#ffbd2e"></div>
+            <div class="screen-dot" style="background:#27c93f"></div>
+            <div class="screen-url">doce-lucro-dashboard.vercel.app</div>
+          </div>
+          <div class="screen-body" style="background:var(--cacau);padding:32px 24px">
+            <div class="mock-login">
+              <div class="mock-logo-sm">🍫</div>
+              <div class="mock-login-title">Doce Lucro</div>
+              <div class="mock-login-sub">Painel financeiro para confeiteiras</div>
+              <div class="mock-tabs">
+                <div class="mock-tab active">Entrar</div>
+                <div class="mock-tab">Criar conta</div>
+              </div>
+              <div style="margin-bottom:4px;font-family:var(--ff-display);font-size:9px;font-weight:700;color:var(--caramelo);letter-spacing:1px;text-transform:uppercase">E-mail</div>
+              <div class="mock-field focused"></div>
+              <div style="margin-bottom:4px;margin-top:6px;font-family:var(--ff-display);font-size:9px;font-weight:700;color:var(--caramelo);letter-spacing:1px;text-transform:uppercase">Senha</div>
+              <div class="mock-field"></div>
+              <div class="mock-btn"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Passo 2: Dashboard -->
+    <div class="tutorial-grid reverse" style="margin-top:72px">
+      <div>
+        <div class="screen-mockup">
+          <div class="screen-bar">
+            <div class="screen-dot" style="background:#ff5f56"></div>
+            <div class="screen-dot" style="background:#ffbd2e"></div>
+            <div class="screen-dot" style="background:#27c93f"></div>
+            <div class="screen-url">doce-lucro-dashboard.vercel.app</div>
+          </div>
+          <div class="screen-body" style="background:#f9f2e6">
+            <div class="mock-sidebar">
+              <div class="mock-side">
+                <div style="width:28px;height:28px;background:var(--grad-gold);border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:14px">🍫</div>
+                <div class="mock-nav-item active"></div>
+                <div class="mock-nav-item"></div>
+                <div class="mock-nav-item"></div>
+                <div class="mock-nav-item"></div>
+              </div>
+              <div class="mock-content">
+                <div class="mock-stats">
+                  <div class="mock-stat gold"><div class="mock-stat-label"></div><div class="mock-stat-value"></div></div>
+                  <div class="mock-stat green"><div class="mock-stat-label"></div><div class="mock-stat-value"></div></div>
+                  <div class="mock-stat" style="background:rgba(45,92,124,0.1);border-top:2px solid var(--azul)"><div class="mock-stat-label"></div><div class="mock-stat-value"></div></div>
+                  <div class="mock-stat" style="background:rgba(184,92,56,0.1);border-top:2px solid var(--terracota)"><div class="mock-stat-label"></div><div class="mock-stat-value"></div></div>
+                </div>
+                <div class="mock-chart">
+                  <div class="mock-bar" style="height:45%"></div>
+                  <div class="mock-bar" style="height:70%"></div>
+                  <div class="mock-bar" style="height:55%"></div>
+                  <div class="mock-bar" style="height:85%"></div>
+                  <div class="mock-bar" style="height:40%"></div>
+                  <div class="mock-bar" style="height:90%"></div>
+                  <div class="mock-bar" style="height:60%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-badge" style="margin-bottom:14px">Passo 2</div>
+        <h3 style="font-family:var(--ff-display);font-size:26px;font-weight:900;color:var(--cacau);margin-bottom:14px;line-height:1.2">Entendendo o Dashboard</h3>
+        <p style="font-size:15px;color:var(--cinza);line-height:1.7;margin-bottom:28px">O Dashboard e a tela principal. Ela resume tudo que importa no seu negocio naquele mes.</p>
+        <div class="tutorial-steps">
+          <div class="tutorial-step">
+            <div class="tutorial-step-num" style="background:#E8F5EE;color:var(--verde)">💰</div>
+            <div class="tutorial-step-text">
+              <h4>Card dourado: Faturamento total</h4>
+              <p>Soma de todos os pedidos pagos do mes atual.</p>
+            </div>
+          </div>
+          <div class="tutorial-step">
+            <div class="tutorial-step-num" style="background:#E8F5EE;color:var(--verde)">📈</div>
+            <div class="tutorial-step-text">
+              <h4>Card verde: Lucro liquido</h4>
+              <p>Faturamento menos todos os custos. Este e o dinheiro que realmente ficou para voce.</p>
+            </div>
+          </div>
+          <div class="tutorial-step">
+            <div class="tutorial-step-num" style="background:#E8F5EE;color:var(--verde)">📊</div>
+            <div class="tutorial-step-text">
+              <h4>Grafico de barras</h4>
+              <p>Mostra o faturamento de cada dia do mes. Voce ve facilmente quais dias foram mais produtivos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Passo 3: Registrar venda -->
+    <div class="tutorial-grid" style="margin-top:72px">
+      <div>
+        <div class="section-badge" style="margin-bottom:14px">Passo 3</div>
+        <h3 style="font-family:var(--ff-display);font-size:26px;font-weight:900;color:var(--cacau);margin-bottom:14px;line-height:1.2">Registrando uma venda</h3>
+        <p style="font-size:15px;color:var(--cinza);line-height:1.7;margin-bottom:28px">Sempre que fechar um pedido, registre no painel. Leva menos de 30 segundos e tudo e calculado automaticamente.</p>
+        <div class="tutorial-steps">
+          <div class="tutorial-step">
+            <div class="tutorial-step-num">1</div>
+            <div class="tutorial-step-text">
+              <h4>Va em "Vendas" e clique em "+ Nova Venda"</h4>
+              <p>Um formulario vai aparecer. Preencha a data, o nome do cliente e escolha o produto.</p>
+            </div>
+          </div>
+          <div class="tutorial-step">
+            <div class="tutorial-step-num">2</div>
+            <div class="tutorial-step-text">
+              <h4>Selecione um produto do catalogo</h4>
+              <p>Se o produto ja estiver cadastrado, o preco e o custo preenchem automaticamente. Sem digitar nada!</p>
+            </div>
+          </div>
+          <div class="tutorial-step">
+            <div class="tutorial-step-num">3</div>
+            <div class="tutorial-step-text">
+              <h4>Confira o lucro estimado antes de salvar</h4>
+              <p>Logo abaixo do formulario aparece o total e o lucro estimado da venda. Salve quando estiver tudo certo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="screen-mockup">
+          <div class="screen-bar">
+            <div class="screen-dot" style="background:#ff5f56"></div>
+            <div class="screen-dot" style="background:#ffbd2e"></div>
+            <div class="screen-dot" style="background:#27c93f"></div>
+            <div class="screen-url">doce-lucro-dashboard.vercel.app</div>
+          </div>
+          <div class="screen-body" style="background:#f9f2e6;padding:16px">
+            <div class="mock-modal">
+              <div class="mock-modal-title"></div>
+              <div class="mock-form-row">
+                <div><div class="mock-label"></div><div class="mock-input"></div></div>
+                <div><div class="mock-label"></div><div class="mock-input"></div></div>
+              </div>
+              <div><div class="mock-label" style="width:35%"></div><div class="mock-input" style="background:rgba(201,151,58,0.08);border-color:var(--dourado)"></div></div>
+              <div style="margin-top:8px"><div class="mock-label"></div><div class="mock-input"></div></div>
+              <div class="mock-form-row" style="margin-top:8px">
+                <div><div class="mock-label"></div><div class="mock-input"></div></div>
+                <div><div class="mock-label"></div><div class="mock-input"></div></div>
+              </div>
+              <div class="mock-preview"></div>
+              <div class="mock-btns">
+                <div class="mock-btn-sec"></div>
+                <div class="mock-btn-save"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dica -->
+    <div class="callout-box" style="margin-top:56px">
+      <div class="callout-icon">💡</div>
+      <div>
+        <h4>Dica: Cadastre seus produtos primeiro</h4>
+        <p>Antes de registrar vendas, va em "Produtos" e cadastre todos os seus doces com os custos reais. Assim, quando for registrar uma venda, basta selecionar o produto e o painel preenche tudo sozinho. Isso economiza muito tempo no dia a dia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FAQ ═══════════════ -->
+<section style="background:#fff;padding:80px 24px">
+  <div class="container" style="max-width:760px">
+    <div class="section-badge">Duvidas frequentes</div>
+    <h2 class="section-title" style="margin-bottom:40px">Perguntas <span>frequentes</span></h2>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Meus dados ficam seguros? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Sim. Cada usuario so acessa seus proprios dados. O banco de dados usa Row Level Security (RLS), que garante que nenhuma outra pessoa consiga ver o que e seu, mesmo que tente. Seus dados ficam em servidores profissionais na nuvem.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Preciso instalar algum aplicativo? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Nao. O painel funciona direto no navegador do celular ou computador. Basta abrir o link e fazer login. Nenhuma instalacao necessaria.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Posso acessar pelo celular? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Sim! O painel funciona no celular pelo navegador. Abra o Chrome ou Safari, acesse o link e faca login. Voce pode ate adicionar o painel na tela inicial do seu celular como se fosse um aplicativo.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          E gratuito para sempre? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Sim, para todas as alunas do Kit Doce Lucro o painel e totalmente gratuito. Nenhum custo adicional, nenhuma assinatura.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Esqueci minha senha. O que faco? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Na tela de login, clique em "Entrar" e tente fazer login normalmente. Se errar a senha, o sistema vai informar. Para redefinir, entre em contato pelo suporte do kit que iremos te ajudar a recuperar o acesso.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Posso usar para mais de um negocio? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Cada conta e para um negocio. Se voce tiver dois negocios diferentes, recomendamos criar duas contas com e-mails diferentes para manter os dados separados e organizados.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA FINAL ═══════════════ -->
+<section class="cta-final">
+  <h2>Pronta para ver<br><span>seu lucro de verdade?</span></h2>
+  <p>Abra o painel agora, crie sua conta em 30 segundos e registre sua primeira venda hoje.</p>
+  <a href="/index.html" class="btn-cta">Acessar o Painel <span class="btn-cta-arrow">→</span></a>
+</section>
+
+<footer>
+  <p>Kit Doce Lucro &nbsp;·&nbsp; Painel Financeiro para Confeiteiras</p>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  const item = el.parentElement
+  const isOpen = item.classList.contains('open')
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'))
+  if (!isOpen) item.classList.add('open')
+}
+</script>
+</body>
+</html>

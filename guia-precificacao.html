@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guia de Precificação para Confeiteiras — Kit Doce Lucro</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ══════════════════════════════════════
+       TOKENS
+    ══════════════════════════════════════ */
+    :root {
+      --caramelo:  #7C4A2D;
+      --creme:     #F5EDD6;
+      --terracota: #B85C38;
+      --cacau:     #1E0F05;
+      --baunilha:  #FDF8EF;
+      --dourado:   #C9973A;
+      --cinza:     #7A6B60;
+      --cinza-claro: #EDE7DC;
+
+      --ff-display: 'Poppins', sans-serif;
+      --ff-body:    'Inter', sans-serif;
+    }
+
+    /* ══════════════════════════════════════
+       BASE
+    ══════════════════════════════════════ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body {
+      font-family: var(--ff-body);
+      background: #e8e0d5;
+      color: var(--cacau);
+      font-size: 10pt;
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════
+       PAGE SETUP — A4
+    ══════════════════════════════════════ */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--baunilha);
+      margin: 0 auto 8mm;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+
+    @media print {
+      body { background: none; margin: 0; }
+      .page { margin: 0; box-shadow: none; }
+      .no-print { display: none !important; }
+    }
+
+    /* ══════════════════════════════════════
+       PRINT BUTTON
+    ══════════════════════════════════════ */
+    .print-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--cacau);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+    }
+    .print-bar p {
+      font-family: var(--ff-body);
+      font-size: 12px;
+      color: rgba(253,248,239,.55);
+    }
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #c9690f 0%, #b85c38 100%);
+      color: #fff;
+      font-family: var(--ff-body);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 24px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+    }
+    .print-btn:hover { opacity: .9; }
+    @media print { .print-bar { display: none; } }
+
+    /* ══════════════════════════════════════
+       SPACER (so fixed bar doesn't overlap)
+    ══════════════════════════════════════ */
+    .top-spacer { height: 52px; }
+    @media print { .top-spacer { display: none; } }
+
+    /* ══════════════════════════════════════
+       COVER PAGE
+    ══════════════════════════════════════ */
+    .cover {
+      background: var(--cacau);
+      display: flex;
+      flex-direction: column;
+      min-height: 297mm;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover__glow-1 {
+      position: absolute;
+      width: 300mm; height: 300mm;
+      right: -80mm; top: -120mm;
+      background: radial-gradient(ellipse, rgba(201,151,58,.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cover__glow-2 {
+      position: absolute;
+      width: 200mm; height: 200mm;
+      left: -60mm; bottom: -60mm;
+      background: radial-gradient(ellipse, rgba(184,92,56,.12) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .cover__top {
+      padding: 14mm 16mm 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+    .cover__brand {
+      font-family: var(--ff-display);
+      font-size: 13pt;
+      font-weight: 700;
+      color: var(--dourado);
+      letter-spacing: .06em;
+    }
+    .cover__kit-label {
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(245,237,214,.4);
+    }
+    .cover__body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 16mm;
+      position: relative;
+      z-index: 1;
+    }
+    .cover__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--dourado);
+      background: rgba(201,151,58,.12);
+      border: 1px solid rgba(201,151,58,.3);
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 20mm;
+      width: fit-content;
+    }
+    .cover__eyebrow {
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--dourado);
+      margin-bottom: 6mm;
+    }
+    .cover__h1 {
+      font-family: var(--ff-display);
+      font-size: 34pt;
+      font-weight: 800;
+      line-height: 1.12;
+      color: #fff;
+      margin-bottom: 8mm;
+      letter-spacing: -.02em;
+    }
+    .cover__h1 span { color: var(--dourado); }
+    .cover__sub {
+      font-size: 12pt;
+      line-height: 1.65;
+      color: rgba(245,237,214,.62);
+      max-width: 120mm;
+      margin-bottom: 16mm;
+    }
+    .cover__divider {
+      width: 14mm;
+      height: 3px;
+      background: linear-gradient(90deg, var(--dourado), var(--terracota));
+      border-radius: 2px;
+      margin-bottom: 10mm;
+    }
+    .cover__promise {
+      display: flex;
+      flex-direction: column;
+      gap: 4mm;
+    }
+    .cover__promise-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10pt;
+      color: rgba(245,237,214,.75);
+    }
+    .cover__promise-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--dourado);
+      flex-shrink: 0;
+    }
+    .cover__footer {
+      padding: 8mm 16mm;
+      border-top: 1px solid rgba(245,237,214,.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+    .cover__footer-text {
+      font-size: 8pt;
+      color: rgba(245,237,214,.25);
+    }
+    .cover__material-num {
+      font-family: var(--ff-display);
+      font-size: 9pt;
+      font-weight: 700;
+      color: rgba(201,151,58,.4);
+      letter-spacing: .06em;
+    }
+
+    /* ══════════════════════════════════════
+       INNER PAGES — COMMON
+    ══════════════════════════════════════ */
+    .page-inner {
+      padding: 14mm 16mm 12mm;
+      min-height: 297mm;
+      display: flex;
+      flex-direction: column;
+    }
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 6mm;
+      margin-bottom: 8mm;
+      border-bottom: 1px solid var(--cinza-claro);
+    }
+    .page-brand {
+      font-family: var(--ff-display);
+      font-size: 8pt;
+      font-weight: 700;
+      color: var(--dourado);
+      letter-spacing: .06em;
+    }
+    .page-chapter {
+      font-size: 7.5pt;
+      font-weight: 500;
+      color: var(--cinza);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .page-footer {
+      margin-top: auto;
+      padding-top: 6mm;
+      border-top: 1px solid var(--cinza-claro);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-num {
+      font-size: 8pt;
+      font-weight: 600;
+      color: var(--cinza);
+    }
+    .page-footer-brand {
+      font-size: 7.5pt;
+      color: rgba(122,107,96,.5);
+    }
+    .page-content { flex: 1; }
+
+    /* ══════════════════════════════════════
+       CHAPTER OPENER
+    ══════════════════════════════════════ */
+    .chapter-opener {
+      background: linear-gradient(135deg, var(--cacau) 0%, #3a1a08 100%);
+      min-height: 297mm;
+      display: flex;
+      flex-direction: column;
+      padding: 14mm 16mm;
+      position: relative;
+      overflow: hidden;
+    }
+    .chapter-opener__glow {
+      position: absolute;
+      width: 200mm; height: 200mm;
+      right: -40mm; bottom: -60mm;
+      background: radial-gradient(ellipse, rgba(201,151,58,.15) 0%, transparent 65%);
+    }
+    .chapter-opener__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 6mm;
+      margin-bottom: 0;
+      border-bottom: 1px solid rgba(245,237,214,.08);
+    }
+    .chapter-opener__brand {
+      font-family: var(--ff-display);
+      font-size: 8pt;
+      font-weight: 700;
+      color: var(--dourado);
+      letter-spacing: .06em;
+    }
+    .chapter-opener__kit {
+      font-size: 7.5pt;
+      color: rgba(245,237,214,.25);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .chapter-opener__body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .chapter-num {
+      font-family: var(--ff-display);
+      font-size: 80pt;
+      font-weight: 800;
+      color: rgba(201,151,58,.12);
+      line-height: 1;
+      margin-bottom: -6mm;
+    }
+    .chapter-tag {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--dourado);
+      margin-bottom: 4mm;
+    }
+    .chapter-title {
+      font-family: var(--ff-display);
+      font-size: 28pt;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.18;
+      margin-bottom: 6mm;
+      letter-spacing: -.01em;
+    }
+    .chapter-desc {
+      font-size: 12pt;
+      line-height: 1.7;
+      color: rgba(245,237,214,.6);
+      max-width: 120mm;
+    }
+    .chapter-opener__footer {
+      padding-top: 6mm;
+      border-top: 1px solid rgba(245,237,214,.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chapter-opener__footer-text { font-size: 7.5pt; color: rgba(245,237,214,.2); }
+    .chapter-opener__page-num { font-size: 8pt; font-weight: 600; color: rgba(201,151,58,.5); }
+
+    /* ══════════════════════════════════════
+       TYPOGRAPHY — CONTENT
+    ══════════════════════════════════════ */
+    .section-title {
+      font-family: var(--ff-display);
+      font-size: 16pt;
+      font-weight: 700;
+      color: var(--cacau);
+      line-height: 1.25;
+      margin-bottom: 4mm;
+      letter-spacing: -.01em;
+    }
+    .section-title--sm {
+      font-size: 13pt;
+      margin-bottom: 3mm;
+    }
+    .section-divider {
+      width: 10mm;
+      height: 2.5px;
+      background: linear-gradient(90deg, var(--dourado), var(--terracota));
+      border-radius: 2px;
+      margin-bottom: 5mm;
+    }
+    .body-text {
+      font-size: 10pt;
+      line-height: 1.78;
+      color: #3a2e28;
+      margin-bottom: 4mm;
+    }
+    .body-text strong { color: var(--cacau); font-weight: 600; }
+    .lead-text {
+      font-size: 12pt;
+      line-height: 1.7;
+      color: var(--cinza);
+      margin-bottom: 6mm;
+    }
+
+    /* ══════════════════════════════════════
+       CALLOUT BOXES
+    ══════════════════════════════════════ */
+    .callout {
+      background: var(--creme);
+      border-left: 3px solid var(--dourado);
+      border-radius: 6px;
+      padding: 5mm 6mm;
+      margin: 5mm 0;
+    }
+    .callout--dark {
+      background: var(--cacau);
+      border-left: 3px solid var(--dourado);
+      color: var(--creme);
+    }
+    .callout--alert {
+      background: rgba(184,92,56,.06);
+      border-left: 3px solid var(--terracota);
+    }
+    .callout__title {
+      font-family: var(--ff-display);
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--dourado);
+      margin-bottom: 2mm;
+    }
+    .callout--dark .callout__title { color: var(--dourado); }
+    .callout--alert .callout__title { color: var(--terracota); }
+    .callout__text {
+      font-size: 10pt;
+      line-height: 1.65;
+      color: var(--cacau);
+    }
+    .callout--dark .callout__text { color: rgba(245,237,214,.8); }
+
+    /* ══════════════════════════════════════
+       FORMULA BOX
+    ══════════════════════════════════════ */
+    .formula-box {
+      background: var(--cacau);
+      border-radius: 10px;
+      padding: 7mm 8mm;
+      margin: 5mm 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .formula-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--dourado), var(--terracota));
+    }
+    .formula-box__label {
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--dourado);
+      margin-bottom: 3mm;
+    }
+    .formula-box__formula {
+      font-family: var(--ff-display);
+      font-size: 15pt;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.4;
+    }
+    .formula-box__formula em {
+      font-style: normal;
+      color: var(--dourado);
+    }
+    .formula-box__sub {
+      font-size: 8.5pt;
+      color: rgba(245,237,214,.45);
+      margin-top: 2mm;
+    }
+
+    /* ══════════════════════════════════════
+       CHECKLIST
+    ══════════════════════════════════════ */
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3mm;
+      margin: 4mm 0;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 10pt;
+      line-height: 1.55;
+      color: #3a2e28;
+    }
+    .check-icon {
+      flex-shrink: 0;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--dourado), var(--terracota));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: #fff;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+    .check-icon--empty {
+      background: none;
+      border: 1.5px solid var(--cinza-claro);
+    }
+
+    /* ══════════════════════════════════════
+       STEP CARDS
+    ══════════════════════════════════════ */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 4mm;
+      margin: 4mm 0;
+    }
+    .step {
+      display: flex;
+      gap: 5mm;
+      align-items: flex-start;
+      background: #fff;
+      border-radius: 8px;
+      padding: 5mm;
+      border: 1px solid var(--cinza-claro);
+    }
+    .step__num {
+      flex-shrink: 0;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--cacau);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-display);
+      font-size: 11pt;
+      font-weight: 800;
+      color: var(--dourado);
+    }
+    .step__title {
+      font-family: var(--ff-display);
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--cacau);
+      margin-bottom: 1.5mm;
+    }
+    .step__text {
+      font-size: 9.5pt;
+      line-height: 1.65;
+      color: var(--cinza);
+    }
+
+    /* ══════════════════════════════════════
+       EXAMPLE TABLE
+    ══════════════════════════════════════ */
+    .table-wrap {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--cinza-claro);
+      margin: 4mm 0;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--cacau); }
+    thead th {
+      font-family: var(--ff-body);
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--creme);
+      padding: 3.5mm 4mm;
+      text-align: left;
+    }
+    tbody tr:nth-child(even) { background: var(--baunilha); }
+    tbody tr:nth-child(odd)  { background: #fff; }
+    tbody td {
+      font-size: 9.5pt;
+      color: var(--cacau);
+      padding: 3mm 4mm;
+      border-bottom: 1px solid var(--cinza-claro);
+      line-height: 1.4;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    .td-total {
+      font-family: var(--ff-display);
+      font-weight: 700;
+      color: var(--caramelo);
+    }
+    tfoot { background: var(--creme); }
+    tfoot td {
+      font-family: var(--ff-display);
+      font-size: 10pt;
+      font-weight: 700;
+      color: var(--caramelo);
+      padding: 3.5mm 4mm;
+    }
+
+    /* ══════════════════════════════════════
+       TWO COLUMNS
+    ══════════════════════════════════════ */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm;
+      margin: 4mm 0;
+    }
+    .col-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 5mm;
+      border: 1px solid var(--cinza-claro);
+    }
+    .col-card__title {
+      font-family: var(--ff-display);
+      font-size: 10pt;
+      font-weight: 700;
+      color: var(--cacau);
+      margin-bottom: 2.5mm;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .col-card__dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .col-card__dot--gold { background: var(--dourado); }
+    .col-card__dot--terra { background: var(--terracota); }
+    .col-card__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+    }
+    .col-card__list li {
+      font-size: 9pt;
+      color: var(--cinza);
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.5;
+    }
+    .col-card__list li::before {
+      content: '·';
+      color: var(--dourado);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       HIGHLIGHT STAT
+    ══════════════════════════════════════ */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4mm;
+      margin: 4mm 0;
+    }
+    .stat-card {
+      background: var(--cacau);
+      border-radius: 8px;
+      padding: 5mm 4mm;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--dourado), var(--terracota));
+    }
+    .stat-card__num {
+      font-family: var(--ff-display);
+      font-size: 20pt;
+      font-weight: 800;
+      color: var(--dourado);
+      line-height: 1;
+      margin-bottom: 1.5mm;
+    }
+    .stat-card__label {
+      font-size: 8pt;
+      color: rgba(245,237,214,.55);
+      line-height: 1.4;
+    }
+
+    /* ══════════════════════════════════════
+       WORKSHEET (fillable)
+    ══════════════════════════════════════ */
+    .worksheet {
+      border-radius: 8px;
+      border: 1px solid var(--cinza-claro);
+      overflow: hidden;
+      margin: 4mm 0;
+    }
+    .worksheet__header {
+      background: linear-gradient(135deg, var(--cacau), #3a1a08);
+      padding: 4mm 5mm;
+    }
+    .worksheet__header-title {
+      font-family: var(--ff-display);
+      font-size: 10pt;
+      font-weight: 700;
+      color: var(--creme);
+    }
+    .worksheet__header-sub {
+      font-size: 8pt;
+      color: rgba(245,237,214,.45);
+    }
+    .worksheet-row {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--cinza-claro);
+      background: #fff;
+    }
+    .worksheet-row:nth-child(even) { background: var(--baunilha); }
+    .worksheet-row:last-child { border-bottom: none; }
+    .worksheet-row__label {
+      flex: 1;
+      font-size: 9.5pt;
+      color: var(--cacau);
+      padding: 3mm 4mm;
+    }
+    .worksheet-row__field {
+      width: 50mm;
+      border-left: 1px solid var(--cinza-claro);
+      padding: 3mm 4mm;
+      font-size: 9pt;
+      color: var(--cinza);
+    }
+    .worksheet-row--total {
+      background: var(--creme);
+    }
+    .worksheet-row--total .worksheet-row__label {
+      font-family: var(--ff-display);
+      font-weight: 700;
+      color: var(--caramelo);
+      font-size: 10pt;
+    }
+    .worksheet-row--total .worksheet-row__field {
+      font-family: var(--ff-display);
+      font-weight: 700;
+      color: var(--caramelo);
+      font-size: 12pt;
+      background: var(--creme);
+    }
+
+    /* ══════════════════════════════════════
+       SUMMARY PAGE
+    ══════════════════════════════════════ */
+    .summary-page {
+      background: linear-gradient(145deg, var(--cacau) 0%, #2a1008 100%);
+      min-height: 297mm;
+      display: flex;
+      flex-direction: column;
+      padding: 14mm 16mm;
+      position: relative;
+      overflow: hidden;
+    }
+    .summary-page__glow {
+      position: absolute;
+      width: 250mm; height: 250mm;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse, rgba(201,151,58,.1) 0%, transparent 68%);
+    }
+    .summary-content { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; }
+    .summary-title {
+      font-family: var(--ff-display);
+      font-size: 26pt;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 8mm;
+      letter-spacing: -.01em;
+    }
+    .summary-title span { color: var(--dourado); }
+    .summary-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 4mm;
+      flex: 1;
+    }
+    .summary-card {
+      background: rgba(253,248,239,.04);
+      border: 1px solid rgba(201,151,58,.18);
+      border-radius: 10px;
+      padding: 5mm 6mm;
+      display: flex;
+      align-items: flex-start;
+      gap: 5mm;
+    }
+    .summary-card__icon {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: rgba(201,151,58,.15);
+      border: 1px solid rgba(201,151,58,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .summary-card__title {
+      font-family: var(--ff-display);
+      font-size: 11pt;
+      font-weight: 700;
+      color: var(--creme);
+      margin-bottom: 1.5mm;
+    }
+    .summary-card__text {
+      font-size: 9.5pt;
+      line-height: 1.6;
+      color: rgba(245,237,214,.55);
+    }
+
+    /* Spacing helpers */
+    .mt-2 { margin-top: 2mm; }
+    .mt-4 { margin-top: 4mm; }
+    .mt-6 { margin-top: 6mm; }
+    .mb-2 { margin-bottom: 2mm; }
+    .mb-4 { margin-bottom: 4mm; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Print Bar -->
+  <div class="print-bar no-print">
+    <p>Guia de Precificação para Confeiteiras &nbsp;·&nbsp; Kit Doce Lucro</p>
+    <button class="print-btn" onclick="window.print()">
+      Salvar como PDF  ↓
+    </button>
+  </div>
+  <div class="top-spacer no-print"></div>
+
+
+  <!-- ══════════════════════════════════
+       CAPA
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="cover">
+      <div class="cover__glow-1"></div>
+      <div class="cover__glow-2"></div>
+
+      <div class="cover__top">
+        <span class="cover__brand">Doce Lucro</span>
+        <span class="cover__kit-label">Material 01 de 04</span>
+      </div>
+
+      <div class="cover__body">
+        <span class="cover__tag">Guia Prático</span>
+        <p class="cover__eyebrow">Kit Doce Lucro</p>
+        <h1 class="cover__h1">
+          Guia de<br/>
+          <span>Precificação</span><br/>
+          para Confeiteiras
+        </h1>
+        <div class="cover__divider"></div>
+        <p class="cover__sub">
+          O método passo a passo para calcular o preço real de qualquer produto e parar de chutar o valor do seu trabalho.
+        </p>
+        <div class="cover__promise">
+          <div class="cover__promise-item">
+            <span class="cover__promise-dot"></span>
+            Fórmula completa de precificação
+          </div>
+          <div class="cover__promise-item">
+            <span class="cover__promise-dot"></span>
+            Exemplos práticos com valores reais
+          </div>
+          <div class="cover__promise-item">
+            <span class="cover__promise-dot"></span>
+            Planilha de cálculo preenchível
+          </div>
+          <div class="cover__promise-item">
+            <span class="cover__promise-dot"></span>
+            Como responder ao "está caro" sem baixar o preço
+          </div>
+        </div>
+      </div>
+
+      <div class="cover__footer">
+        <span class="cover__footer-text">© 2025 Kit Doce Lucro · Todos os direitos reservados</span>
+        <span class="cover__material-num">MATERIAL 01</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       SUMÁRIO
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="page-brand">Doce Lucro</span>
+        <span class="page-chapter">Sumário</span>
+      </div>
+      <div class="page-content">
+
+        <h2 class="section-title">O que você vai aprender</h2>
+        <div class="section-divider"></div>
+        <p class="lead-text">Este guia foi construído para ser direto ao ponto. Sem teoria desnecessária. Só o que você precisa para calcular o preço certo do seu produto hoje.</p>
+
+        <div class="steps mt-4">
+          <div class="step">
+            <div class="step__num">1</div>
+            <div>
+              <p class="step__title">Por que você está cobrando errado</p>
+              <p class="step__text">Entenda os erros mais comuns que fazem confeiteiras trabalharem no prejuízo sem perceber.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">2</div>
+            <div>
+              <p class="step__title">Os quatro componentes do preço</p>
+              <p class="step__text">Custo de ingredientes, embalagem, tempo e margem de lucro: o que cada um significa e como calcular.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">3</div>
+            <div>
+              <p class="step__title">A fórmula completa</p>
+              <p class="step__text">Custos fixos, variáveis e a lógica de markup. Como chegar ao preço mínimo e ao preço ideal.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">4</div>
+            <div>
+              <p class="step__title">Exemplos práticos</p>
+              <p class="step__text">Cálculo completo de um bolo, um kit de brigadeiros e um bolo personalizado com decoração.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">5</div>
+            <div>
+              <p class="step__title">Planilha de cálculo preenchível</p>
+              <p class="step__text">Modelo pronto para você usar com qualquer receita. Imprime, preenche e já tem o preço.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">6</div>
+            <div>
+              <p class="step__title">Como defender seu preço</p>
+              <p class="step__text">O que fazer quando o cliente diz "está caro". Estratégia de valor, não de desconto.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout mt-4">
+          <p class="callout__title">Antes de começar</p>
+          <p class="callout__text">Tenha em mãos as notas fiscais ou recibos dos seus últimos ingredientes. Você vai precisar dos valores reais para preencher os exercícios ao longo do guia.</p>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">2</span>
+        <span class="page-footer-brand">Kit Doce Lucro · Guia de Precificação</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CAP. 1 OPENER
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="chapter-opener">
+      <div class="chapter-opener__glow"></div>
+      <div class="chapter-opener__header">
+        <span class="chapter-opener__brand">Doce Lucro</span>
+        <span class="chapter-opener__kit">Guia de Precificação</span>
+      </div>
+      <div class="chapter-opener__body">
+        <div class="chapter-num">01</div>
+        <p class="chapter-tag">Capítulo 01</p>
+        <h2 class="chapter-title">Por que você está cobrando errado</h2>
+        <p class="chapter-desc">Os erros que ninguém fala e que custam dinheiro todo mês.</p>
+      </div>
+      <div class="chapter-opener__footer">
+        <span class="chapter-opener__footer-text">Kit Doce Lucro · Material 01</span>
+        <span class="chapter-opener__page-num">3</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CAP. 1 CONTEÚDO
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="page-brand">Doce Lucro</span>
+        <span class="page-chapter">Capítulo 01 · Por que você está cobrando errado</span>
+      </div>
+      <div class="page-content">
+
+        <p class="body-text">A maioria das confeiteiras que trabalham em casa cometem os mesmos três erros de precificação. Não por falta de esforço, mas porque ninguém ensina isso.</p>
+
+        <div class="two-col mt-4">
+          <div class="col-card">
+            <p class="col-card__title"><span class="col-card__dot col-card__dot--terra"></span>Erros mais comuns</p>
+            <ul class="col-card__list">
+              <li>Cobrar "o que a concorrência cobra" sem saber os próprios custos</li>
+              <li>Não incluir o próprio tempo no preço</li>
+              <li>Esquecer custos como gás, luz, embalagem e deslocamento</li>
+              <li>Dar desconto para não "perder" a venda</li>
+              <li>Achar que preço mais baixo = mais clientes</li>
+            </ul>
+          </div>
+          <div class="col-card">
+            <p class="col-card__title"><span class="col-card__dot col-card__dot--gold"></span>O que você vai corrigir</p>
+            <ul class="col-card__list">
+              <li>Calcular o custo real de cada receita</li>
+              <li>Precificar seu tempo como profissional</li>
+              <li>Incluir todos os custos invisíveis</li>
+              <li>Ter segurança para defender seu preço</li>
+              <li>Lucrar de verdade, não só faturar</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="section-title section-title--sm mt-4">O mito do "preço de mercado"</h3>
+        <p class="body-text">Quando você olha o preço da concorrência para decidir o seu, está cometendo um erro grave: <strong>você não sabe o custo delas.</strong> Elas podem estar no prejuízo e nem saber. Você pode ter custos completamente diferentes.</p>
+        <p class="body-text">Seu preço precisa ser calculado a partir dos <strong>seus custos reais</strong>, da <strong>sua margem de lucro desejada</strong> e do <strong>valor que você entrega</strong>. Não do que a vizinha cobra.</p>
+
+        <div class="callout--alert callout mt-4">
+          <p class="callout__title">Você sabia?</p>
+          <p class="callout__text">Uma confeiteira que vende bolo por R$80 sem calcular os custos pode estar lucrando R$12 ou perdendo R$15. Sem o cálculo, é impossível saber. Este guia resolve isso.</p>
+        </div>
+
+        <h3 class="section-title section-title--sm mt-4">O problema do tempo invisível</h3>
+        <p class="body-text">Quanto tempo você leva para fazer um bolo? Inclua: <strong>planejamento, compras, preparo, decoração, embalagem e entrega.</strong> Agora multiplique pelo que você valeria por hora se fosse uma funcionária. Esse valor precisa estar no seu preço.</p>
+        <p class="body-text">Se você leva 5 horas e se paga R$15/hora, o custo do seu tempo já é R$75. Isso antes de calcular qualquer ingrediente.</p>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">4</span>
+        <span class="page-footer-brand">Kit Doce Lucro · Guia de Precificação</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CAP. 2 OPENER
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="chapter-opener">
+      <div class="chapter-opener__glow"></div>
+      <div class="chapter-opener__header">
+        <span class="chapter-opener__brand">Doce Lucro</span>
+        <span class="chapter-opener__kit">Guia de Precificação</span>
+      </div>
+      <div class="chapter-opener__body">
+        <div class="chapter-num">02</div>
+        <p class="chapter-tag">Capítulo 02</p>
+        <h2 class="chapter-title">Os quatro componentes do preço</h2>
+        <p class="chapter-desc">Tudo que precisa entrar na conta antes de você falar um número para o cliente.</p>
+      </div>
+      <div class="chapter-opener__footer">
+        <span class="chapter-opener__footer-text">Kit Doce Lucro · Material 01</span>
+        <span class="chapter-opener__page-num">5</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CAP. 2 CONTEÚDO
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="page-brand">Doce Lucro</span>
+        <span class="page-chapter">Capítulo 02 · Os quatro componentes do preço</span>
+      </div>
+      <div class="page-content">
+
+        <p class="lead-text">Cada produto que você vende tem quatro custos que precisam ser calculados. Ignore qualquer um e seu preço estará errado.</p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step__num">A</div>
+            <div>
+              <p class="step__title">Custo de ingredientes (CMV)</p>
+              <p class="step__text">Some o custo de cada ingrediente usado na receita, no valor exato da quantidade usada. Ex: se o pacote de farinha custa R$6 e você usou 300g dos 1kg, o custo é R$1,80.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">B</div>
+            <div>
+              <p class="step__title">Custos de embalagem e insumos</p>
+              <p class="step__text">Caixas, fitas, papel manteiga, velas, tags, papel celofane. Tudo que sai junto com o produto precisa entrar na conta. Calcule por unidade.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">C</div>
+            <div>
+              <p class="step__title">Custos fixos rateados (despesas da cozinha)</p>
+              <p class="step__text">Gás, energia elétrica, internet, aluguel (se houver), assinaturas de ferramentas. Divida o total mensal pelo número de produtos que você produz por mês. Esse é o rateio por produto.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">D</div>
+            <div>
+              <p class="step__title">Sua hora de trabalho</p>
+              <p class="step__text">Defina quanto quer receber por hora. Multiplique pelo tempo total de produção (preparo + decoração + embalagem). Esse é o custo do seu tempo.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="formula-box mt-4">
+          <p class="formula-box__label">Custo Total do Produto</p>
+          <p class="formula-box__formula">
+            <em>A</em> + <em>B</em> + <em>C</em> + <em>D</em> = Custo Real
+          </p>
+          <p class="formula-box__sub">Ingredientes + Embalagem + Custos Fixos Rateados + Seu Tempo</p>
+        </div>
+
+        <div class="callout mt-4">
+          <p class="callout__title">Exemplo rápido</p>
+          <p class="callout__text">Bolo de chocolate 1kg: Ingredientes R$18 + Embalagem R$4 + Custos fixos R$5 + Tempo (3h × R$15) R$45 = <strong>Custo Real: R$72</strong>. Se você vende por R$70, está no prejuízo.</p>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">6</span>
+        <span class="page-footer-brand">Kit Doce Lucro · Guia de Precificação</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CAP. 3 — FÓRMULA COMPLETA
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="chapter-opener">
+      <div class="chapter-opener__glow"></div>
+      <div class="chapter-opener__header">
+        <span class="chapter-opener__brand">Doce Lucro</span>
+        <span class="chapter-opener__kit">Guia de Precificação</span>
+      </div>
+      <div class="chapter-opener__body">
+        <div class="chapter-num">03</div>
+        <p class="chapter-tag">Capítulo 03</p>
+        <h2 class="chapter-title">A fórmula completa de precificação</h2>
+        <p class="chapter-desc">Do custo real ao preço de venda. Passo a passo, sem complicação.</p>
+      </div>
+      <div class="chapter-opener__footer">
+        <span class="chapter-opener__footer-text">Kit Doce Lucro · Material 01</span>
+        <span class="chapter-opener__page-num">7</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CAP. 3 CONTEÚDO
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="page-brand">Doce Lucro</span>
+        <span class="page-chapter">Capítulo 03 · A fórmula completa</span>
+      </div>
+      <div class="page-content">
+
+        <p class="lead-text">Com o custo real em mãos, você aplica um percentual de markup para chegar ao preço de venda. O markup cobre lucro, imprevistos e taxa de plataforma de pagamento.</p>
+
+        <div class="formula-box">
+          <p class="formula-box__label">Preço de Venda</p>
+          <p class="formula-box__formula">
+            Preço = Custo Real ÷ <em>(1 − Markup%)</em>
+          </p>
+          <p class="formula-box__sub">Markup recomendado para home baker: entre 40% e 60%</p>
+        </div>
+
+        <h3 class="section-title section-title--sm mt-4">Como definir seu markup</h3>
+
+        <div class="table-wrap mt-2">
+          <table>
+            <thead>
+              <tr>
+                <th>Markup %</th>
+                <th>Quando usar</th>
+                <th>Exemplo (custo R$72)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>30%</strong></td>
+                <td>Produto de alto volume, poucos concorrentes</td>
+                <td>R$ 103</td>
+              </tr>
+              <tr>
+                <td><strong>40%</strong></td>
+                <td>Produto standard, mercado local</td>
+                <td>R$ 120</td>
+              </tr>
+              <tr>
+                <td><strong>50%</strong></td>
+                <td>Produto com diferencial, bairro com poder aquisitivo médio</td>
+                <td>R$ 144</td>
+              </tr>
+              <tr>
+                <td><strong>60%</strong></td>
+                <td>Produto gourmet, entrega premium, cliente exigente</td>
+                <td>R$ 180</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="two-col mt-4">
+          <div class="callout">
+            <p class="callout__title">Preço mínimo</p>
+            <p class="callout__text">É o custo real + pelo menos 20% de markup. Abaixo disso, você está vendendo no prejuízo. Nunca negocie abaixo desse número.</p>
+          </div>
+          <div class="callout">
+            <p class="callout__title">Preço ideal</p>
+            <p class="callout__text">Custo real + markup de 40% a 60%. É o preço que remunera bem seu trabalho e ainda cabe no orçamento do seu público.</p>
+          </div>
+        </div>
+
+        <h3 class="section-title section-title--sm mt-4">E as taxas de plataforma?</h3>
+        <p class="body-text">Se você vende pelo Instagram com pagamento via Pix ou cartão em maquininha, inclua a taxa no markup. Maquininha cobra em média 2% a 3,5%. Adicione esse percentual ao seu markup para não perder margem.</p>
+
+        <div class="callout--dark callout mt-2">
+          <p class="callout__title">Regra de ouro</p>
+          <p class="callout__text">Seu preço nunca pode ser definido pelo cliente. Ele pode ser ajustado pela sua estratégia de mercado, mas sempre partindo do seu custo real. Quem define o valor do seu trabalho é você.</p>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">8</span>
+        <span class="page-footer-brand">Kit Doce Lucro · Guia de Precificação</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CAP. 4 — EXEMPLOS PRÁTICOS
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="page-brand">Doce Lucro</span>
+        <span class="page-chapter">Capítulo 04 · Exemplos práticos</span>
+      </div>
+      <div class="page-content">
+
+        <h2 class="section-title">Exemplo 1: Bolo de Chocolate 1kg</h2>
+        <div class="section-divider"></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Quantidade</th>
+                <th>Custo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Farinha de trigo</td><td>300g</td><td>R$ 1,80</td></tr>
+              <tr><td>Chocolate em pó</td><td>100g</td><td>R$ 3,20</td></tr>
+              <tr><td>Ovos</td><td>4 un</td><td>R$ 3,60</td></tr>
+              <tr><td>Manteiga</td><td>150g</td><td>R$ 4,50</td></tr>
+              <tr><td>Açúcar</td><td>200g</td><td>R$ 1,40</td></tr>
+              <tr><td>Ganache (cobertura)</td><td>200g</td><td>R$ 6,00</td></tr>
+              <tr><td>Embalagem (caixa + fita)</td><td>1 un</td><td>R$ 4,50</td></tr>
+              <tr><td>Custos fixos rateados</td><td>—</td><td>R$ 5,00</td></tr>
+              <tr><td>Tempo: 4h × R$15/h</td><td>—</td><td>R$ 60,00</td></tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2"><strong>Custo Real Total</strong></td>
+                <td class="td-total">R$ 90,00</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="stat-strip mt-4">
+          <div class="stat-card">
+            <p class="stat-card__num">R$90</p>
+            <p class="stat-card__label">Custo real</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-card__num">R$150</p>
+            <p class="stat-card__label">Preço mínimo (40%)</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-card__num">R$180</p>
+            <p class="stat-card__label">Preço ideal (50%)</p>
+          </div>
+        </div>
+
+        <h2 class="section-title section-title--sm mt-4">Exemplo 2: Kit 30 Brigadeiros Gourmet</h2>
+        <div class="section-divider"></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Quantidade</th>
+                <th>Custo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Chocolate belga 70%</td><td>200g</td><td>R$ 9,00</td></tr>
+              <tr><td>Leite condensado</td><td>1 lata</td><td>R$ 5,50</td></tr>
+              <tr><td>Creme de leite</td><td>200ml</td><td>R$ 3,20</td></tr>
+              <tr><td>Granulado premium</td><td>100g</td><td>R$ 2,80</td></tr>
+              <tr><td>Forminhas + caixinha</td><td>30 un</td><td>R$ 6,00</td></tr>
+              <tr><td>Custos fixos rateados</td><td>—</td><td>R$ 3,50</td></tr>
+              <tr><td>Tempo: 2h × R$15/h</td><td>—</td><td>R$ 30,00</td></tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2"><strong>Custo Real Total</strong></td>
+                <td class="td-total">R$ 60,00</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="stat-strip mt-4">
+          <div class="stat-card">
+            <p class="stat-card__num">R$60</p>
+            <p class="stat-card__label">Custo real</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-card__num">R$100</p>
+            <p class="stat-card__label">Preço mínimo (40%)</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-card__num">R$120</p>
+            <p class="stat-card__label">Preço ideal (50%)</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">9</span>
+        <span class="page-footer-brand">Kit Doce Lucro · Guia de Precificação</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CAP. 5 — PLANILHA PREENCHÍVEL
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="page-brand">Doce Lucro</span>
+        <span class="page-chapter">Capítulo 05 · Planilha de cálculo</span>
+      </div>
+      <div class="page-content">
+
+        <h2 class="section-title">Calcule o preço do seu produto</h2>
+        <div class="section-divider"></div>
+        <p class="body-text">Use esta planilha para calcular qualquer produto. Imprima ou preencha em PDF. Uma cópia para cada receita diferente.</p>
+
+        <div class="worksheet mt-4">
+          <div class="worksheet__header">
+            <p class="worksheet__header-title">Produto: ___________________________________</p>
+            <p class="worksheet__header-sub">Quantidade produzida por vez: _______________</p>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label"><strong>A. Ingredientes</strong> — some cada item abaixo</span>
+            <span class="worksheet-row__field"></span>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label">Ingrediente 1: _______________________</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label">Ingrediente 2: _______________________</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label">Ingrediente 3: _______________________</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label">Ingrediente 4: _______________________</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label">Outros ingredientes: _________________</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row--total worksheet-row">
+            <span class="worksheet-row__label">Subtotal A (ingredientes)</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label"><strong>B. Embalagem e insumos</strong></span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label"><strong>C. Custos fixos rateados</strong> (gás, luz etc. ÷ nº de produtos/mês)</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label"><strong>D. Seu tempo</strong> — _____ horas × R$___/hora</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row--total worksheet-row">
+            <span class="worksheet-row__label">CUSTO REAL TOTAL (A+B+C+D)</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+          <div class="worksheet-row">
+            <span class="worksheet-row__label">Markup escolhido: _______%</span>
+            <span class="worksheet-row__field"></span>
+          </div>
+          <div class="worksheet-row--total worksheet-row">
+            <span class="worksheet-row__label">PREÇO DE VENDA (Custo ÷ (1 − markup))</span>
+            <span class="worksheet-row__field">R$ ___________</span>
+          </div>
+        </div>
+
+        <div class="callout mt-4">
+          <p class="callout__title">Dica</p>
+          <p class="callout__text">Arredonde sempre para cima. R$143,70 vira R$145 ou R$150. Preços arredondados são mais fáceis de comunicar e transmitem mais confiança ao cliente.</p>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">10</span>
+        <span class="page-footer-brand">Kit Doce Lucro · Guia de Precificação</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       CAP. 6 — DEFENDER O PREÇO
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="page-brand">Doce Lucro</span>
+        <span class="page-chapter">Capítulo 06 · Como defender seu preço</span>
+      </div>
+      <div class="page-content">
+
+        <h2 class="section-title">Quando o cliente diz "está caro"</h2>
+        <div class="section-divider"></div>
+        <p class="lead-text">Esse é o momento em que a maioria das confeiteiras perde dinheiro. Não porque o preço está errado, mas porque ela não sabe o que responder.</p>
+
+        <h3 class="section-title section-title--sm">O que nunca fazer</h3>
+        <ul class="checklist">
+          <li><span class="check-icon" style="background: #c0392b;">✕</span>Dar desconto imediato sem questionar</li>
+          <li><span class="check-icon" style="background: #c0392b;">✕</span>Pedir desculpas pelo preço</li>
+          <li><span class="check-icon" style="background: #c0392b;">✕</span>Comparar seu produto com o da concorrência</li>
+          <li><span class="check-icon" style="background: #c0392b;">✕</span>Fazer mais por menos para "não perder o cliente"</li>
+        </ul>
+
+        <h3 class="section-title section-title--sm mt-4">O que responder</h3>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step__num">1</div>
+            <div>
+              <p class="step__title">Valide sem ceder</p>
+              <p class="step__text">"Entendo! Meus produtos são feitos com ingredientes selecionados e muito cuidado. Por isso o valor é esse."</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">2</div>
+            <div>
+              <p class="step__title">Apresente o que está incluso</p>
+              <p class="step__text">"Nesse valor está incluso [ingredientes premium / decoração personalizada / embalagem presente / entrega]."</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">3</div>
+            <div>
+              <p class="step__title">Ofereça uma alternativa menor (não desconto)</p>
+              <p class="step__text">"Se o orçamento for menor, posso fazer um bolo menor ou um kit com menos unidades. O que faz mais sentido para você?"</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout--dark callout mt-4">
+          <p class="callout__title">Lembre sempre</p>
+          <p class="callout__text">Cliente que só compra se você baixar o preço não é o cliente ideal. O cliente certo entende o valor do que você faz e paga pelo que você entrega. Seu trabalho é encontrar essas pessoas, não convencer quem não valoriza.</p>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">11</span>
+        <span class="page-footer-brand">Kit Doce Lucro · Guia de Precificação</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       PÁGINA FINAL
+  ══════════════════════════════════ -->
+  <div class="page">
+    <div class="summary-page">
+      <div class="summary-page__glow"></div>
+      <div class="summary-content">
+        <div class="page-header" style="border-bottom-color: rgba(245,237,214,.08);">
+          <span class="page-brand">Doce Lucro</span>
+          <span class="page-chapter" style="color: rgba(245,237,214,.3);">Resumo final</span>
+        </div>
+
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+          <p style="font-size:8pt; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--dourado); margin-bottom:5mm;">Resumo do guia</p>
+          <h2 class="summary-title">O que você<br/>aprendeu hoje</h2>
+
+          <div class="summary-cards">
+            <div class="summary-card">
+              <div class="summary-card__icon">📊</div>
+              <div>
+                <p class="summary-card__title">Os 4 componentes do custo real</p>
+                <p class="summary-card__text">Ingredientes + Embalagem + Custos fixos rateados + Seu tempo. Todos precisam estar no preço.</p>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-card__icon">🧮</div>
+              <div>
+                <p class="summary-card__title">A fórmula de markup</p>
+                <p class="summary-card__text">Preço = Custo Real ÷ (1 − Markup%). Use entre 40% e 60% dependendo do produto e público.</p>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-card__icon">💬</div>
+              <div>
+                <p class="summary-card__title">Como defender seu preço</p>
+                <p class="summary-card__text">Valide sem ceder, apresente o que está incluso e ofereça alternativas, nunca descontos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 8mm; padding: 5mm 6mm; background: rgba(201,151,58,.1); border: 1px solid rgba(201,151,58,.2); border-radius: 10px;">
+            <p style="font-size:9pt; font-weight:700; color:var(--dourado); margin-bottom:2mm;">Próximo passo</p>
+            <p style="font-size:10pt; color:rgba(245,237,214,.7); line-height:1.65;">Use a planilha de cálculo (pág. 10) agora mesmo com um produto que você vende. Compare com o preço que você estava cobrando. Esse número vai te surpreender.</p>
+          </div>
+        </div>
+
+        <div style="padding-top:6mm; border-top:1px solid rgba(245,237,214,.08); display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:8pt; color:rgba(245,237,214,.2);">© 2025 Kit Doce Lucro · Todos os direitos reservados</span>
+          <span style="font-family:var(--ff-display); font-size:9pt; font-weight:700; color:rgba(201,151,58,.4);">MATERIAL 01 / 04</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planilha de Gestão Financeira — Kit Doce Lucro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --caramelo: #7C4A2D;
+    --creme: #F5EDD6;
+    --terracota: #B85C38;
+    --cacau: #1E0F05;
+    --baunilha: #FDF8EF;
+    --dourado: #C9973A;
+    --cinza: #7A6B60;
+    --verde: #2D7C4A;
+    --ff-display: 'Poppins', sans-serif;
+    --ff-body: 'Inter', sans-serif;
+    --grad-dark: linear-gradient(135deg, #1E0F05 0%, #3a1a08 100%);
+    --grad-gold: linear-gradient(135deg, #c9973a 0%, #e8b84b 100%);
+    --grad-green: linear-gradient(135deg, #1e7a40 0%, #2D7C4A 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--ff-body);
+    background: var(--baunilha);
+    color: var(--cacau);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── PRINT ────────────────────────────────────── */
+  .print-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--cacau);
+    padding: 10px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+  }
+  .print-bar span { color: var(--creme); font-family: var(--ff-body); font-size: 13px; }
+  .print-bar a {
+    background: var(--grad-gold);
+    color: var(--cacau);
+    font-family: var(--ff-display);
+    font-size: 12px; font-weight: 700;
+    padding: 8px 20px; border-radius: 6px;
+    text-decoration: none; white-space: nowrap;
+  }
+  @media print { .print-bar { display: none; } body { margin: 0; } }
+
+  /* ── LAYOUT ────────────────────────────────────── */
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 72px 40px 60px;
+  }
+
+  /* ── HERO ──────────────────────────────────────── */
+  .hero {
+    background: var(--grad-dark);
+    border-radius: 16px;
+    padding: 56px 48px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(201,151,58,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--grad-gold);
+    color: var(--cacau);
+    font-family: var(--ff-display);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--ff-display);
+    font-size: 36px; font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--dourado); }
+  .hero p {
+    font-size: 16px; color: var(--creme);
+    line-height: 1.65;
+    max-width: 500px; margin: 0 auto 36px;
+  }
+  .hero-cta {
+    display: inline-block;
+    background: var(--grad-green);
+    color: #fff;
+    font-family: var(--ff-display);
+    font-size: 15px; font-weight: 700;
+    padding: 16px 40px;
+    border-radius: 10px;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 20px rgba(45,124,74,0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(45,124,74,0.5); }
+  .hero-note { margin-top: 16px; font-size: 12px; color: var(--cinza); }
+
+  /* ── STATS ─────────────────────────────────────── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .stat-card {
+    background: #fff;
+    border: 1.5px solid var(--creme);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .stat-card .stat-num {
+    font-family: var(--ff-display);
+    font-size: 28px; font-weight: 800;
+    color: var(--dourado);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .stat-card .stat-label {
+    font-size: 13px; color: var(--cinza);
+    line-height: 1.4;
+  }
+
+  /* ── SEÇÃO ─────────────────────────────────────── */
+  .section-label {
+    font-family: var(--ff-display);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: var(--ff-display);
+    font-size: 22px; font-weight: 800;
+    color: var(--cacau);
+    margin-bottom: 28px;
+    line-height: 1.2;
+  }
+
+  /* ── ABAS ──────────────────────────────────────── */
+  .abas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .aba-card {
+    background: #fff;
+    border: 1.5px solid var(--creme);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .aba-card.destaque {
+    grid-column: 1 / -1;
+    border-color: var(--dourado);
+    background: linear-gradient(135deg, #fffbf2 0%, #fff8e8 100%);
+  }
+  .aba-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .aba-icon.ing   { background: #FEF3E8; }
+  .aba-icon.prec  { background: linear-gradient(135deg, #FEF8E8, #FDEFC0); }
+  .aba-icon.vend  { background: #E8F5EE; }
+  .aba-icon.met   { background: #FDE8E8; }
+  .aba-icon.dash  { background: var(--cacau); }
+  .aba-card h3 {
+    font-family: var(--ff-display);
+    font-size: 14px; font-weight: 700;
+    color: var(--cacau);
+    margin-bottom: 6px;
+  }
+  .aba-card h3 .tag {
+    font-size: 10px; font-weight: 600;
+    background: var(--creme);
+    color: var(--caramelo);
+    padding: 2px 8px; border-radius: 4px;
+    vertical-align: middle; margin-left: 6px;
+  }
+  .aba-card p { font-size: 13px; color: var(--cinza); line-height: 1.55; }
+
+  /* ── COMO USAR ─────────────────────────────────── */
+  .steps {
+    background: var(--grad-dark);
+    border-radius: 16px;
+    padding: 40px 40px;
+    margin-bottom: 48px;
+    counter-reset: step;
+  }
+  .steps .section-title { color: #fff; }
+  .steps .section-label { color: var(--dourado); opacity: 0.8; }
+  .step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 28px;
+    counter-increment: step;
+  }
+  .step:last-child { margin-bottom: 0; }
+  .step-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--grad-gold);
+    color: var(--cacau);
+    font-family: var(--ff-display);
+    font-size: 16px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-body h4 {
+    font-family: var(--ff-display);
+    font-size: 15px; font-weight: 700;
+    color: #fff; margin-bottom: 4px;
+  }
+  .step-body p { font-size: 13px; color: var(--creme); line-height: 1.55; }
+
+  /* ── LEGENDA ───────────────────────────────────── */
+  .legenda {
+    background: #fff;
+    border: 1.5px solid var(--creme);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 48px;
+  }
+  .legenda-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--creme);
+  }
+  .cor-swatch {
+    width: 28px; height: 28px; border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.08);
+    flex-shrink: 0;
+  }
+  .legenda-item span { font-size: 13px; color: var(--cacau); line-height: 1.4; }
+
+  /* ── CTA FINAL ─────────────────────────────────── */
+  .cta-final {
+    background: var(--grad-dark);
+    border-radius: 16px;
+    padding: 48px;
+    text-align: center;
+    position: relative; overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .cta-final::before {
+    content: '';
+    position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(circle, rgba(201,151,58,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-final h2 {
+    font-family: var(--ff-display);
+    font-size: 26px; font-weight: 800;
+    color: #fff; margin-bottom: 12px;
+  }
+  .cta-final h2 span { color: var(--dourado); }
+  .cta-final p { font-size: 15px; color: var(--creme); margin-bottom: 32px; }
+  .cta-final a {
+    display: inline-block;
+    background: var(--grad-green);
+    color: #fff;
+    font-family: var(--ff-display);
+    font-size: 15px; font-weight: 700;
+    padding: 18px 48px;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(45,124,74,0.45);
+  }
+  .cta-final .cta-note { margin-top: 14px; font-size: 12px; color: var(--cinza); }
+
+  /* ── DICAS ─────────────────────────────────────── */
+  .dicas {
+    margin-bottom: 48px;
+  }
+  .dica-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .dica-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: #fff;
+    border: 1.5px solid var(--creme);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .dica-icon {
+    font-size: 18px; line-height: 1; flex-shrink: 0; margin-top: 1px;
+  }
+  .dica-item p { font-size: 13px; color: var(--cacau); line-height: 1.55; }
+  .dica-item strong { font-weight: 600; }
+
+  /* ── FOOTER ────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--creme);
+    font-size: 12px;
+    color: var(--cinza);
+    line-height: 1.7;
+  }
+  footer strong { color: var(--caramelo); }
+</style>
+</head>
+<body>
+
+<!-- Barra de impressão -->
+<div class="print-bar">
+  <span>Material 04 — Planilha de Gestão Financeira</span>
+  <a href="#" onclick="window.print();return false;">Salvar como PDF</a>
+</div>
+
+<div class="page">
+
+  <!-- ── HERO ─────────────────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="hero-badge">Material 04 — Kit Doce Lucro</div>
+    <h1>Sua <span>Planilha Financeira</span><br>ja esta pronta.</h1>
+    <p>Calcule precos, registre vendas e acompanhe suas metas em um so lugar. Sem formulas para criar. Sem configuracoes. Abra e comece a usar agora.</p>
+    <a class="hero-cta" href="https://docs.google.com/spreadsheets/d/1Q2oLGxjUHY6TshwSFXNUrNlOEQ-Fl5R_mm0jllFgD9Q/edit?usp=sharing" target="_blank">
+      Acessar a Planilha Agora
+    </a>
+    <p class="hero-note">Acesso gratuito incluso no kit. Faca uma copia para sua conta do Google.</p>
+  </div>
+
+  <!-- ── STATS ─────────────────────────────────────────────────────────── -->
+  <div class="stats">
+    <div class="stat-card">
+      <span class="stat-num">5</span>
+      <span class="stat-label">abas integradas entre si</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">30+</span>
+      <span class="stat-label">ingredientes ja pre-cadastrados</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">15</span>
+      <span class="stat-label">produtos com preco calculado</span>
+    </div>
+  </div>
+
+  <!-- ── ABAS ──────────────────────────────────────────────────────────── -->
+  <div class="section-label">O que tem dentro</div>
+  <div class="section-title">5 abas que trabalham juntas por voce</div>
+
+  <div class="abas-grid">
+
+    <div class="aba-card destaque">
+      <div class="aba-icon dash">&#128202;</div>
+      <div>
+        <h3>DASHBOARD <span class="tag">Aba principal</span></h3>
+        <p>A primeira tela que voce ve ao abrir a planilha. Mostra automaticamente o faturamento do mes atual, o lucro, a margem geral e o progresso das suas metas. Tudo calculado com base na data de hoje, sem voce precisar fazer nada.</p>
+      </div>
+    </div>
+
+    <div class="aba-card">
+      <div class="aba-icon ing">&#127859;</div>
+      <div>
+        <h3>INGREDIENTES</h3>
+        <p>Cadastre o preco de cada ingrediente e insumo. A planilha calcula automaticamente o custo por unidade (grama, ml, unidade). Ja vem com 30 ingredientes pre-cadastrados para voce so atualizar os precos.</p>
+      </div>
+    </div>
+
+    <div class="aba-card">
+      <div class="aba-icon prec">&#127775;</div>
+      <div>
+        <h3>PRECIFICACAO</h3>
+        <p>Informe o custo de cada produto e a margem desejada. A planilha calcula o preco minimo e o preco sugerido. Ja vem com 15 produtos calculados. Inclui indicador de status: "Lucrativo" ou "Abaixo do minimo".</p>
+      </div>
+    </div>
+
+    <div class="aba-card">
+      <div class="aba-icon vend">&#128176;</div>
+      <div>
+        <h3>VENDAS</h3>
+        <p>Registre cada pedido com cliente, produto, quantidade e preco. O custo e o lucro de cada venda sao calculados automaticamente buscando os dados da aba Precificacao.</p>
+      </div>
+    </div>
+
+    <div class="aba-card">
+      <div class="aba-icon met">&#127919;</div>
+      <div>
+        <h3>METAS</h3>
+        <p>Defina metas mensais de faturamento e lucro para cada mes do ano. Ja vem com metas pre-definidas de R$1.500 a R$4.500, que voce pode ajustar. Acompanhe o progresso mes a mes.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── COMO USAR ──────────────────────────────────────────────────────── -->
+  <div class="steps">
+    <div class="section-label">Primeiros passos</div>
+    <div class="section-title">Como comecar a usar</div>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Abra o link e faca uma copia</h4>
+        <p>Clique no botao "Acessar a Planilha Agora". No Google Sheets, va em Arquivo e clique em "Fazer uma copia". A planilha vai aparecer no seu Google Drive e sera so sua.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Atualize os precos dos ingredientes</h4>
+        <p>Va para a aba INGREDIENTES e atualize os precos da coluna "Valor Pago" com os valores que voce paga no mercado hoje. O custo por unidade sera recalculado na hora.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Confira a precificacao dos seus produtos</h4>
+        <p>Va para a aba PRECIFICACAO. Veja o preco minimo e o preco sugerido calculados para cada produto. Informe o preco que voce pratica hoje e veja o status: lucrativo ou abaixo do minimo.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Registre suas vendas</h4>
+        <p>A cada pedido concluido, va para a aba VENDAS e preencha as colunas em amarelo: data, cliente, produto, quantidade e preco cobrado. O custo e o lucro aparecem automaticamente.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>Acompanhe pelo Dashboard</h4>
+        <p>Volte para a aba DASHBOARD sempre que quiser ver um resumo do negocio. Os numeros do mes atual se atualizam sozinhos conforme voce registra as vendas.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── LEGENDA ────────────────────────────────────────────────────────── -->
+  <div class="legenda">
+    <div class="section-label">Guia visual</div>
+    <div class="section-title" style="margin-bottom: 4px;">O significado de cada cor</div>
+    <p style="font-size: 13px; color: var(--cinza); margin-bottom: 8px;">Voce so precisa preencher as celulas em amarelo. As demais sao calculadas automaticamente.</p>
+    <div class="legenda-grid">
+      <div class="legenda-item">
+        <div class="cor-swatch" style="background: #FFF8E7;"></div>
+        <span><strong>Amarelo</strong> — celula para voce preencher</span>
+      </div>
+      <div class="legenda-item">
+        <div class="cor-swatch" style="background: #F5F5F5;"></div>
+        <span><strong>Cinza claro</strong> — calculado automaticamente</span>
+      </div>
+      <div class="legenda-item">
+        <div class="cor-swatch" style="background: #E8F5EE;"></div>
+        <span><strong>Verde</strong> — resultado positivo ou meta atingida</span>
+      </div>
+      <div class="legenda-item">
+        <div class="cor-swatch" style="background: #FFE5E5;"></div>
+        <span><strong>Vermelho claro</strong> — atencao: preco ou resultado abaixo do ideal</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DICAS ──────────────────────────────────────────────────────────── -->
+  <div class="dicas">
+    <div class="section-label">Boas praticas</div>
+    <div class="section-title">Dicas para aproveitar ao maximo</div>
+    <div class="dica-list">
+      <div class="dica-item">
+        <div class="dica-icon">&#128204;</div>
+        <p><strong>Atualize os precos dos ingredientes a cada compra.</strong> Farinha, chocolate e embalagens variam o tempo todo. Manter atualizado garante que seus custos estejam sempre corretos.</p>
+      </div>
+      <div class="dica-item">
+        <div class="dica-icon">&#128205;</div>
+        <p><strong>Use margem minima de 50% na precificacao.</strong> A planilha aceita qualquer margem, mas abaixo de 50% voce nao esta pagando seu proprio trabalho direito.</p>
+      </div>
+      <div class="dica-item">
+        <div class="dica-icon">&#128206;</div>
+        <p><strong>Registre todas as vendas, mesmo as informais.</strong> O Dashboard so mostra seu lucro real se todas as vendas estiverem registradas. Nao deixe nenhuma de fora.</p>
+      </div>
+      <div class="dica-item">
+        <div class="dica-icon">&#128207;</div>
+        <p><strong>O nome do produto em Vendas precisa ser identico ao nome em Precificacao.</strong> A planilha busca o custo pelo nome exato. Se houver diferenca, o custo aparece em branco.</p>
+      </div>
+      <div class="dica-item">
+        <div class="dica-icon">&#128208;</div>
+        <p><strong>Defina suas metas mensais logo no inicio.</strong> Com as metas pre-definidas na aba METAS, o Dashboard mostra automaticamente o progresso do mes atual toda vez que voce abre a planilha.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CTA FINAL ──────────────────────────────────────────────────────── -->
+  <div class="cta-final">
+    <h2>Pronta para ver <span>quanto voce lucra</span> de verdade?</h2>
+    <p>A planilha ja esta configurada. Clique abaixo, faca uma copia e comece a usar agora mesmo.</p>
+    <a href="https://docs.google.com/spreadsheets/d/1Q2oLGxjUHY6TshwSFXNUrNlOEQ-Fl5R_mm0jllFgD9Q/edit?usp=sharing" target="_blank">Acessar a Planilha Agora</a>
+    <p class="cta-note">Funciona no Google Sheets (gratuito). Acesse pelo celular ou computador.</p>
+  </div>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────────────── -->
+  <footer>
+    <strong>Kit Doce Lucro</strong> — Material 04: Planilha de Gestao Financeira<br>
+    &copy; 2026 Kit Doce Lucro. Todos os direitos reservados.
+  </footer>
+
+</div>
+</body>
+</html>

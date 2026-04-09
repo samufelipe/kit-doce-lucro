@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist + Script de Vendas WhatsApp — Kit Doce Lucro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --caramelo: #7C4A2D;
+    --creme: #F5EDD6;
+    --terracota: #B85C38;
+    --cacau: #1E0F05;
+    --baunilha: #FDF8EF;
+    --dourado: #C9973A;
+    --cinza: #7A6B60;
+    --verde: #2D7C4A;
+    --verde-light: #E8F5EE;
+    --ff-display: 'Poppins', sans-serif;
+    --ff-body: 'Inter', sans-serif;
+    --grad-btn: linear-gradient(135deg, #c9690f 0%, #b85c38 100%);
+    --grad-gold: linear-gradient(135deg, #c9973a 0%, #e8b84b 100%);
+    --grad-dark: linear-gradient(135deg, #1E0F05 0%, #3a1a08 100%);
+    --grad-green: linear-gradient(135deg, #2D7C4A 0%, #3a9e5f 100%);
+    --radius-pill: 100px;
+    --radius-lg: 24px;
+    --radius: 16px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 20px rgba(30,15,5,0.10);
+    --shadow-lg: 0 8px 40px rgba(30,15,5,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--ff-body);
+    background: #e8e0d5;
+    color: var(--cacau);
+  }
+
+  /* ── PRINT BAR ───────────────────────────────────── */
+  .print-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: var(--cacau);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 32px;
+    z-index: 9999;
+    font-family: var(--ff-display);
+    font-size: 14px;
+  }
+  .print-bar span { opacity: 0.7; font-size: 13px; }
+  .print-bar button {
+    background: var(--grad-gold);
+    color: #1E0F05;
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 9px 24px;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+  @media print { .print-bar { display: none; } }
+
+  /* ── A4 PAGE WRAPPER ─────────────────────────────── */
+  .page-wrap {
+    padding: 56px 0 32px;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto 12px;
+    background: white;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { background: white; }
+    .page-wrap { padding: 0; }
+    .page { margin: 0; box-shadow: none; width: 100%; page-break-after: always; }
+  }
+
+  /* ── COVER ───────────────────────────────────────── */
+  .cover {
+    background: var(--grad-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 297mm;
+    padding: 60px 48px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(201,151,58,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(184,92,56,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cover-kit-badge {
+    background: rgba(201,151,58,0.15);
+    border: 1px solid rgba(201,151,58,0.4);
+    color: var(--dourado);
+    border-radius: var(--radius-pill);
+    padding: 6px 20px;
+    font-family: var(--ff-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+
+  .cover-number {
+    font-family: var(--ff-display);
+    font-size: 120px;
+    font-weight: 900;
+    color: rgba(201,151,58,0.08);
+    line-height: 1;
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    letter-spacing: -4px;
+  }
+
+  .cover-icon-wrap {
+    width: 90px; height: 90px;
+    background: var(--grad-gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    margin-bottom: 32px;
+    box-shadow: 0 8px 32px rgba(201,151,58,0.4);
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-title {
+    font-family: var(--ff-display);
+    font-size: 38px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-title span { color: var(--dourado); display: block; }
+
+  .cover-subtitle {
+    font-family: var(--ff-body);
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+    max-width: 420px;
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-divider {
+    width: 60px; height: 3px;
+    background: var(--grad-gold);
+    border-radius: 2px;
+    margin: 0 auto 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-features {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 48px;
+  }
+
+  .cover-feature {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 110px;
+  }
+
+  .cover-feature .feat-number {
+    font-family: var(--ff-display);
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--dourado);
+    display: block;
+  }
+
+  .cover-feature .feat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    display: block;
+    margin-top: 2px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .cover-brand {
+    position: absolute;
+    bottom: 32px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: var(--ff-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── PAGE INNER ──────────────────────────────────── */
+  .page-inner {
+    background: var(--baunilha);
+    min-height: 297mm;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-header {
+    background: var(--cacau);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-header .brand {
+    font-family: var(--ff-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .page-header .chapter-name {
+    font-family: var(--ff-display);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--dourado);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .page-footer {
+    background: var(--cacau);
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .page-footer .page-num {
+    font-family: var(--ff-display);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+  }
+
+  .page-footer .footer-tag {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    font-family: var(--ff-body);
+  }
+
+  .page-content {
+    padding: 36px 40px 24px;
+    flex: 1;
+  }
+
+  /* ── CHAPTER OPENER ──────────────────────────────── */
+  .chapter-opener {
+    background: var(--grad-dark);
+    min-height: 297mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chapter-opener::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(201,151,58,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .chapter-number-bg {
+    position: absolute;
+    top: 40px; right: 40px;
+    font-family: var(--ff-display);
+    font-size: 180px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .chapter-badge {
+    background: rgba(201,151,58,0.15);
+    border: 1px solid rgba(201,151,58,0.35);
+    color: var(--dourado);
+    border-radius: var(--radius-pill);
+    padding: 5px 16px;
+    font-family: var(--ff-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+
+  .chapter-opener h2 {
+    font-family: var(--ff-display);
+    font-size: 42px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chapter-opener h2 em {
+    color: var(--dourado);
+    font-style: normal;
+    display: block;
+  }
+
+  .chapter-opener p {
+    font-family: var(--ff-body);
+    font-size: 17px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    max-width: 460px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 40px;
+  }
+
+  .chapter-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chapter-preview-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: rgba(255,255,255,0.75);
+    font-family: var(--ff-body);
+    font-size: 15px;
+  }
+
+  .chapter-preview-item .dot {
+    width: 8px; height: 8px;
+    background: var(--dourado);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── SECTION TITLE ───────────────────────────────── */
+  .section-title {
+    font-family: var(--ff-display);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--cacau);
+    margin-bottom: 6px;
+    position: relative;
+    padding-left: 16px;
+  }
+
+  .section-title::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 4px;
+    width: 4px; height: 80%;
+    background: var(--grad-gold);
+    border-radius: 2px;
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--cinza);
+    margin-bottom: 24px;
+    padding-left: 16px;
+    line-height: 1.5;
+  }
+
+  /* ── CHECKLIST ITEMS ─────────────────────────────── */
+  .checklist-group {
+    margin-bottom: 28px;
+  }
+
+  .checklist-group-title {
+    font-family: var(--ff-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--dourado);
+    background: rgba(201,151,58,0.1);
+    border-left: 3px solid var(--dourado);
+    padding: 8px 14px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-bottom: 12px;
+  }
+
+  .checklist-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff;
+    border: 1.5px solid #efe6d5;
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    transition: border-color 0.2s;
+  }
+
+  .check-item:hover { border-color: var(--dourado); }
+
+  .check-box {
+    width: 22px; height: 22px;
+    border: 2px solid #d4c4a8;
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .check-item.checked .check-box {
+    background: var(--verde);
+    border-color: var(--verde);
+  }
+
+  .check-item.checked .check-box::after {
+    content: '✓';
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .check-item.checked .check-text {
+    text-decoration: line-through;
+    color: #aaa;
+  }
+
+  .check-text {
+    font-family: var(--ff-body);
+    font-size: 14px;
+    color: var(--cacau);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .check-text strong {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  .check-text span {
+    font-size: 12px;
+    color: var(--cinza);
+  }
+
+  .check-tag {
+    background: var(--creme);
+    color: var(--caramelo);
+    font-family: var(--ff-display);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .check-tag.urgent {
+    background: rgba(184,92,56,0.1);
+    color: var(--terracota);
+  }
+
+  .check-tag.done {
+    background: var(--verde-light);
+    color: var(--verde);
+  }
+
+  /* ── CALLOUT ─────────────────────────────────────── */
+  .callout {
+    background: #fff;
+    border-left: 4px solid var(--dourado);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .callout-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .callout-content { flex: 1; }
+
+  .callout-content strong {
+    font-family: var(--ff-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--caramelo);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .callout-content p {
+    font-size: 13px;
+    color: var(--cacau);
+    line-height: 1.6;
+  }
+
+  .callout--green {
+    border-left-color: var(--verde);
+    background: var(--verde-light);
+  }
+
+  .callout--green .callout-content strong { color: var(--verde); }
+  .callout--green .callout-content p { color: #1a4a2e; }
+
+  .callout--alert {
+    border-left-color: var(--terracota);
+    background: rgba(184,92,56,0.06);
+  }
+
+  .callout--alert .callout-content strong { color: var(--terracota); }
+
+  .callout--dark {
+    background: var(--cacau);
+    border-left-color: var(--dourado);
+    border-radius: var(--radius-sm);
+  }
+
+  .callout--dark .callout-content strong { color: var(--dourado); }
+  .callout--dark .callout-content p { color: rgba(255,255,255,0.75); }
+
+  /* ── SCRIPT CARDS ────────────────────────────────── */
+  .script-step {
+    background: #fff;
+    border: 1.5px solid #efe6d5;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .script-step-header {
+    background: var(--grad-dark);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .script-step-number {
+    width: 32px; height: 32px;
+    background: var(--grad-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ff-display);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--cacau);
+    flex-shrink: 0;
+  }
+
+  .script-step-title {
+    font-family: var(--ff-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    flex: 1;
+  }
+
+  .script-step-emoji {
+    font-size: 20px;
+  }
+
+  .script-step-body {
+    padding: 20px;
+  }
+
+  .script-step-desc {
+    font-size: 13px;
+    color: var(--cinza);
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .whatsapp-bubble {
+    background: #DCF8C6;
+    border-radius: 12px 12px 12px 4px;
+    padding: 12px 16px;
+    font-family: var(--ff-body);
+    font-size: 13.5px;
+    color: #1a3a1a;
+    line-height: 1.65;
+    position: relative;
+    max-width: 100%;
+    margin-bottom: 8px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .whatsapp-bubble::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    bottom: 12px;
+    width: 0; height: 0;
+    border-right: 8px solid #DCF8C6;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+  }
+
+  .whatsapp-bubble .bubble-time {
+    float: right;
+    font-size: 11px;
+    color: #888;
+    margin-left: 12px;
+    margin-top: 4px;
+  }
+
+  .whatsapp-bubble .bubble-check {
+    float: right;
+    font-size: 11px;
+    color: #4fc3f7;
+    margin-left: 4px;
+    margin-top: 4px;
+  }
+
+  .whatsapp-bubble strong { font-weight: 600; color: #0d5c0d; }
+
+  .bubble-label {
+    font-family: var(--ff-display);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cinza);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .bubble-variants {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .script-tip {
+    background: rgba(201,151,58,0.08);
+    border: 1px solid rgba(201,151,58,0.25);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--caramelo);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-top: 12px;
+  }
+
+  .script-tip strong { font-weight: 700; color: var(--dourado); }
+
+  /* ── TWO COL ─────────────────────────────────────── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  /* ── INFO CARD ───────────────────────────────────── */
+  .info-card {
+    background: #fff;
+    border: 1.5px solid #efe6d5;
+    border-radius: var(--radius);
+    padding: 18px 20px;
+  }
+
+  .info-card h4 {
+    font-family: var(--ff-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cacau);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .info-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .info-card ul li {
+    font-size: 13px;
+    color: var(--cacau);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .info-card ul li::before {
+    content: '•';
+    color: var(--dourado);
+    font-weight: 900;
+    position: absolute;
+    left: 4px;
+    top: 0;
+  }
+
+  /* ── STAT STRIP ──────────────────────────────────── */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .stat-card {
+    background: var(--cacau);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .stat-card .stat-num {
+    font-family: var(--ff-display);
+    font-size: 28px;
+    font-weight: 900;
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .stat-card .stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+  }
+
+  /* ── OBJECTION BOX ───────────────────────────────── */
+  .objection-card {
+    background: #fff;
+    border: 1.5px solid #efe6d5;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .objection-header {
+    background: rgba(184,92,56,0.08);
+    border-bottom: 1px solid rgba(184,92,56,0.15);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .objection-header span {
+    font-family: var(--ff-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--terracota);
+  }
+
+  .objection-header .obj-icon { font-size: 16px; }
+
+  .objection-response {
+    padding: 14px 18px;
+  }
+
+  .objection-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--verde);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .objection-response .whatsapp-bubble { max-width: 100%; }
+
+  /* ── FOLLOW UP TABLE ─────────────────────────────── */
+  .followup-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1.5px solid #efe6d5;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+
+  .followup-table thead tr {
+    background: var(--cacau);
+  }
+
+  .followup-table th {
+    font-family: var(--ff-display);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 12px 14px;
+    text-align: left;
+  }
+
+  .followup-table td {
+    padding: 11px 14px;
+    color: var(--cacau);
+    border-bottom: 1px solid #f0e8d8;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .followup-table tr:last-child td { border-bottom: none; }
+
+  .followup-table tr:nth-child(even) td { background: rgba(245,237,214,0.3); }
+
+  .day-badge {
+    background: var(--grad-gold);
+    color: var(--cacau);
+    font-family: var(--ff-display);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+
+  /* ── ROUTINE BOX ─────────────────────────────────── */
+  .routine-box {
+    background: var(--cacau);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .routine-box::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(201,151,58,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .routine-box h4 {
+    font-family: var(--ff-display);
+    font-size: 17px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .routine-box p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .routine-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .routine-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .routine-step-time {
+    background: rgba(201,151,58,0.15);
+    border: 1px solid rgba(201,151,58,0.3);
+    color: var(--dourado);
+    font-family: var(--ff-display);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .routine-step-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.55;
+  }
+
+  .routine-step-text strong { color: #fff; font-weight: 600; }
+
+  /* ── BACK COVER ──────────────────────────────────── */
+  .back-cover {
+    background: var(--grad-dark);
+    min-height: 297mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .back-cover::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,151,58,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .back-cover h2 {
+    font-family: var(--ff-display);
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+    line-height: 1.2;
+  }
+
+  .back-cover h2 span { color: var(--dourado); }
+
+  .back-cover p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    max-width: 380px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 40px;
+  }
+
+  .back-cover-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: left;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 48px;
+  }
+
+  .back-step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+  }
+
+  .back-step-num {
+    width: 36px; height: 36px;
+    background: var(--grad-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ff-display);
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--cacau);
+    flex-shrink: 0;
+  }
+
+  .back-step-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.4;
+  }
+
+  .back-step-text strong { color: #fff; font-weight: 600; display: block; }
+
+  .back-brand {
+    font-family: var(--ff-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 32px;
+    left: 0; right: 0;
+    text-align: center;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- PRINT BAR -->
+<div class="print-bar">
+  <div>
+    <strong>Checklist + Script de Vendas WhatsApp</strong>
+    <span> &nbsp;|&nbsp; Kit Doce Lucro</span>
+  </div>
+  <button onclick="window.print()">Salvar como PDF</button>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ═══════════════════════════════════════════════════════
+       CAPA
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="cover">
+      <div class="cover-number">03</div>
+
+      <div class="cover-kit-badge">Kit Doce Lucro &nbsp;·&nbsp; Material 03</div>
+
+      <div class="cover-icon-wrap">📱</div>
+
+      <h1 class="cover-title">
+        Checklist e Script
+        <span>de Vendas WhatsApp</span>
+      </h1>
+
+      <p class="cover-subtitle">
+        Tudo o que voce precisa para transformar cada conversa no WhatsApp em uma venda concretizada, com mais confiança e menos improvisacao.
+      </p>
+
+      <div class="cover-divider"></div>
+
+      <div class="cover-features">
+        <div class="cover-feature">
+          <span class="feat-number">47</span>
+          <span class="feat-label">Itens no<br>Checklist</span>
+        </div>
+        <div class="cover-feature">
+          <span class="feat-number">8</span>
+          <span class="feat-label">Etapas do<br>Script</span>
+        </div>
+        <div class="cover-feature">
+          <span class="feat-number">12</span>
+          <span class="feat-label">Respostas<br>a Objecoes</span>
+        </div>
+        <div class="cover-feature">
+          <span class="feat-number">5</span>
+          <span class="feat-label">Templates<br>de Follow-up</span>
+        </div>
+      </div>
+
+      <div class="cover-brand">Kit Doce Lucro</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ABERTURA PARTE 1: CHECKLIST
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="chapter-opener">
+      <div class="chapter-number-bg">01</div>
+      <span class="chapter-badge">Parte 01 de 02</span>
+      <h2>
+        O Checklist
+        <em>Completo da Confeiteira</em>
+      </h2>
+      <p>
+        Antes de vender, voce precisa estar preparada. Este checklist cobre tudo: do perfil do WhatsApp ao cardapio, da apresentacao ao pos-venda. Marque cada item conforme for concluindo.
+      </p>
+      <div class="chapter-preview">
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Perfil e presenca profissional no WhatsApp
+        </div>
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Cardapio e apresentacao dos produtos
+        </div>
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Precificacao e politica de pagamento
+        </div>
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Organizacao e atendimento ao cliente
+        </div>
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Pos-venda e reativacao de clientes
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CHECKLIST PAGINA 1
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="brand">Kit Doce Lucro</span>
+        <span class="chapter-name">Checklist da Confeiteira</span>
+      </div>
+      <div class="page-content">
+
+        <div class="section-title">Perfil Profissional no WhatsApp</div>
+        <p class="section-desc">Configure seu perfil para transmitir credibilidade desde o primeiro contato.</p>
+
+        <div class="checklist-group">
+          <div class="checklist-group-title">Configuracao do Perfil</div>
+          <div class="checklist-items">
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Foto de perfil profissional</strong>
+                <span>Use sua foto com avental ou foto dos seus doces mais bonitos. Evite selfies casuais.</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Nome com o nome do negocio</strong>
+                <span>Ex: "Maria Doces Artesanais" ou "Confeitaria da Ana". Fica visivel nas buscas.</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Status com sua especialidade e contato</strong>
+                <span>Ex: "Brigadeiros gourmet e bolos personalizados. Encomendas: seg-sex"</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>WhatsApp Business ativado</strong>
+                <span>Permite mensagens automaticas, catalogo de produtos e etiquetas de atendimento.</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Mensagem automatica de boas-vindas configurada</strong>
+                <span>Ativa quando um novo cliente manda mensagem pela primeira vez.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Mensagem de ausencia configurada</strong>
+                <span>Para fora do horario de atendimento. Informe quando voce retorna.</span>
+              </div>
+              <div class="check-tag">Recomendado</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checklist-group">
+          <div class="checklist-group-title">Catalogo de Produtos</div>
+          <div class="checklist-items">
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Catalogo do WhatsApp Business preenchido</strong>
+                <span>Adicione fotos reais dos seus produtos com nome, descricao e preco.</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Cardapio em PDF pronto para envio</strong>
+                <span>Tenha um PDF elegante com seus produtos, precos e fotos para enviar quando solicitado.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Fotos de alta qualidade de todos os produtos</strong>
+                <span>Luz natural, fundo limpo, angulo favoravel. A foto vende antes do sabor.</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong>Dica de ouro</strong>
+            <p>Uma foto ruim pode arruinar ate o produto mais gostoso. Se necessario, invista uma tarde so em fotografar seus doces com boa luz natural. Isso multiplica suas conversoes imediatamente.</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">03</span>
+        <span class="footer-tag">Checklist + Script de Vendas WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CHECKLIST PAGINA 2
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="brand">Kit Doce Lucro</span>
+        <span class="chapter-name">Checklist da Confeiteira</span>
+      </div>
+      <div class="page-content">
+
+        <div class="checklist-group">
+          <div class="checklist-group-title">Precificacao e Pagamento</div>
+          <div class="checklist-items">
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Todos os produtos com preco calculado corretamente</strong>
+                <span>Use o Guia de Precificacao do Kit para calcular cada produto com margem adequada.</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Politica de pagamento definida e comunicada</strong>
+                <span>Quanto de sinal? Quando pagar o restante? Aceitam quais formas de pagamento?</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Pix configurado com nome do negocio</strong>
+                <span>Chave Pix com CNPJ ou nome do negocio passa mais credibilidade.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Valor minimo de encomenda definido</strong>
+                <span>Evite encomendar quantidades pequenas que nao compensam financeiramente.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Prazo de antecedencia para encomendas estabelecido</strong>
+                <span>Minimo de dias para encomendar. Comunique isso ativamente para evitar pedidos de ultima hora.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checklist-group">
+          <div class="checklist-group-title">Organizacao e Processos</div>
+          <div class="checklist-items">
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Etiquetas organizadas no WhatsApp Business</strong>
+                <span>Crie etiquetas: Novo cliente, Em negociacao, Pago, Entregue, Reativacao.</span>
+              </div>
+              <div class="check-tag">Recomendado</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Planilha ou caderno de encomendas organizado</strong>
+                <span>Registre: cliente, produto, data, valor, sinal pago, saldo a receber.</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Templates de mensagens salvos nos atalhos</strong>
+                <span>WhatsApp Business permite criar atalhos de texto. Use /oi, /preco, /cardapio.</span>
+              </div>
+              <div class="check-tag">Recomendado</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Horario de atendimento definido e cumprido</strong>
+                <span>Responder fora de hora gera expectativa errada. Defina e respeite seu horario.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout--green">
+          <div class="callout-icon">✅</div>
+          <div class="callout-content">
+            <strong>Progresso rapido</strong>
+            <p>Voce nao precisa completar tudo de uma vez. Comece pelos itens marcados como "Urgente" e va avancando. Em uma semana voce estara com tudo no lugar.</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">04</span>
+        <span class="footer-tag">Checklist + Script de Vendas WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CHECKLIST PAGINA 3
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="brand">Kit Doce Lucro</span>
+        <span class="chapter-name">Checklist da Confeiteira</span>
+      </div>
+      <div class="page-content">
+
+        <div class="checklist-group">
+          <div class="checklist-group-title">Atendimento e Experiencia do Cliente</div>
+          <div class="checklist-items">
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Tempo de resposta maximo de 4 horas durante o dia</strong>
+                <span>Clientes que esperam mais de 4h sem resposta frequentemente buscam outro fornecedor.</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Linguagem profissional mas amigavel definida</strong>
+                <span>Nem muito formal (afasta), nem giriosa demais (falta credibilidade). Encontre o meio-termo.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Confirmacao de pedido por escrito sempre</strong>
+                <span>Envie um resumo do pedido: produto, quantidade, data, valor e forma de pagamento.</span>
+              </div>
+              <div class="check-tag urgent">Urgente</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Foto do produto pronto enviada antes da entrega</strong>
+                <span>Isso gera antecipacao e reduz reclamacoes. O cliente sabe exatamente o que vai receber.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Mensagem de agradecimento apos a entrega</strong>
+                <span>Simples e rapida. Abre oportunidade para avaliacao e proxima compra.</span>
+              </div>
+              <div class="check-tag">Recomendado</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checklist-group">
+          <div class="checklist-group-title">Pos-venda e Fidelizacao</div>
+          <div class="checklist-items">
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Lista de clientes organizados por categoria</strong>
+                <span>Clientes frequentes, eventuais, inativos. Permite comunicacao segmentada.</span>
+              </div>
+              <div class="check-tag">Recomendado</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Reativacao mensal de clientes inativos</strong>
+                <span>Um oi simples para quem nao compra ha 30+ dias. O script esta na Parte 2 deste material.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Pedido de avaliacao ou foto enviado</strong>
+                <span>Depoimentos e fotos dos clientes sao o melhor marketing que existe para confeiteiras.</span>
+              </div>
+              <div class="check-tag">Importante</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text">
+                <strong>Programa de indicacao criado (ex: desconto na proxima encomenda)</strong>
+                <span>Clientes felizes indicam. Facilite esse processo com um incentivo simples.</span>
+              </div>
+              <div class="check-tag">Recomendado</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-strip">
+          <div class="stat-card">
+            <span class="stat-num">68%</span>
+            <span class="stat-label">das vendas vem de clientes que ja compraram antes</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">5x</span>
+            <span class="stat-label">mais facil vender para quem ja e cliente do que conquistar um novo</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">4h</span>
+            <span class="stat-label">e o tempo maximo aceitavel para responder uma mensagem durante o dia</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">05</span>
+        <span class="footer-tag">Checklist + Script de Vendas WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ABERTURA PARTE 2: SCRIPT
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="chapter-opener">
+      <div class="chapter-number-bg">02</div>
+      <span class="chapter-badge">Parte 02 de 02</span>
+      <h2>
+        O Script de
+        <em>Vendas no WhatsApp</em>
+      </h2>
+      <p>
+        Chega de improvisar cada atendimento. Este script tem 8 etapas testadas para guiar o cliente desde o primeiro "oi" ate o pagamento, com respostas prontas para cada situacao.
+      </p>
+      <div class="chapter-preview">
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Etapa 1: Recepcao e primeiro contato
+        </div>
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Etapas 2-4: Qualificacao e apresentacao
+        </div>
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Etapas 5-6: Proposta e fechamento
+        </div>
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Etapa 7: Confirmacao e pagamento
+        </div>
+        <div class="chapter-preview-item">
+          <div class="dot"></div>
+          Etapa 8: Entrega e pos-venda
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPT PAGINA 1
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="brand">Kit Doce Lucro</span>
+        <span class="chapter-name">Script de Vendas WhatsApp</span>
+      </div>
+      <div class="page-content">
+
+        <div class="callout callout--dark">
+          <div class="callout-icon">📌</div>
+          <div class="callout-content">
+            <strong>Como usar este script</strong>
+            <p>Nao copie e cole de forma robotica. Use como roteiro base e adapte ao seu jeito de falar. O objetivo e nunca ficar sem saber o que responder, nao soar como um robo.</p>
+          </div>
+        </div>
+
+        <!-- ETAPA 1 -->
+        <div class="script-step">
+          <div class="script-step-header">
+            <div class="script-step-number">1</div>
+            <div class="script-step-title">Recepcao — Primeiro Contato</div>
+            <div class="script-step-emoji">👋</div>
+          </div>
+          <div class="script-step-body">
+            <p class="script-step-desc">O primeiro contato define o tom do atendimento. Seja calorosa, profissional e mostre que esta disponivel para ajudar.</p>
+            <div class="bubble-label">Mensagem automatica de boas-vindas (WhatsApp Business)</div>
+            <div class="whatsapp-bubble">
+              Ola! Seja bem-vinda(o) a <strong>[Nome do Negocio]</strong>! 🍫<br><br>
+              Fico feliz com seu contato. Sou a <strong>[Seu Nome]</strong>, confeiteira artesanal especializada em <strong>[sua especialidade]</strong>.<br><br>
+              Em breve retorno com toda a atencao que voce merece! Se preferir, me conta ja o que procura.
+              <span class="bubble-time">automatica</span>
+            </div>
+            <div class="bubble-label">Resposta manual quando voce assumir o atendimento</div>
+            <div class="whatsapp-bubble">
+              Oi, [Nome do cliente]! Tudo bem? 😊<br><br>
+              Que otimo que voce entrou em contato! Me conta, o que voce esta pensando? E para alguma ocasiao especial ou consumo proprio?
+              <span class="bubble-time">agora</span>
+              <span class="bubble-check">✓✓</span>
+            </div>
+            <div class="script-tip">
+              <strong>Dica:</strong> Sempre pergunte pelo nome do cliente logo no inicio. Usar o nome da pessoa faz toda a diferenca na conexao.
+            </div>
+          </div>
+        </div>
+
+        <!-- ETAPA 2 -->
+        <div class="script-step">
+          <div class="script-step-header">
+            <div class="script-step-number">2</div>
+            <div class="script-step-title">Qualificacao — Entender a Necessidade</div>
+            <div class="script-step-emoji">🔍</div>
+          </div>
+          <div class="script-step-body">
+            <p class="script-step-desc">Antes de apresentar precos, entenda o que o cliente realmente precisa. Isso permite uma proposta mais certeira e mostra que voce se importa.</p>
+            <div class="bubble-label">Perguntas de qualificacao (escolha 2-3)</div>
+            <div class="bubble-variants">
+              <div class="whatsapp-bubble">
+                Que tipo de doce voce tem em mente? Tem alguma preferencia de sabor ou estilo?
+                <span class="bubble-time">agora</span>
+              </div>
+              <div class="whatsapp-bubble">
+                E para quantas pessoas, aproximadamente? Isso me ajuda a indicar a quantidade certa pra voce.
+                <span class="bubble-time">agora</span>
+              </div>
+              <div class="whatsapp-bubble">
+                Tem alguma data em mente? Pergunto porque trabalho com agenda, e gosto de garantir que terei disponibilidade pra fazer com todo cuidado.
+                <span class="bubble-time">agora</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">07</span>
+        <span class="footer-tag">Checklist + Script de Vendas WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPT PAGINA 2
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="brand">Kit Doce Lucro</span>
+        <span class="chapter-name">Script de Vendas WhatsApp</span>
+      </div>
+      <div class="page-content">
+
+        <!-- ETAPA 3 -->
+        <div class="script-step">
+          <div class="script-step-header">
+            <div class="script-step-number">3</div>
+            <div class="script-step-title">Apresentacao — Mostrando seu Trabalho</div>
+            <div class="script-step-emoji">✨</div>
+          </div>
+          <div class="script-step-body">
+            <p class="script-step-desc">Apresente seu trabalho com confianca. Envie fotos, mencione seus diferenciais e construa valor antes de falar em preco.</p>
+            <div class="whatsapp-bubble">
+              Perfeito! Olha, vou te mandar algumas fotos do meu trabalho pra voce ter uma ideia do que produzo. Cada peca e feita artesanalmente, com ingredientes selecionados 🍫<br><br>
+              [Envie 3-5 fotos dos seus melhores produtos]<br><br>
+              Aqui voce ve alguns exemplos. Para o que voce descreveu, eu faria [descreva brevemente o produto]. O que acha?
+              <span class="bubble-time">agora</span>
+              <span class="bubble-check">✓✓</span>
+            </div>
+            <div class="script-tip">
+              <strong>Nunca envie preco sem antes enviar fotos.</strong> As fotos constroem valor e justificam o preco que vem a seguir.
+            </div>
+          </div>
+        </div>
+
+        <!-- ETAPA 4 -->
+        <div class="script-step">
+          <div class="script-step-header">
+            <div class="script-step-number">4</div>
+            <div class="script-step-title">Proposta — Apresentando o Preco</div>
+            <div class="script-step-emoji">💰</div>
+          </div>
+          <div class="script-step-body">
+            <p class="script-step-desc">Apresente o preco com naturalidade e confianca. Nunca peca desculpas pelo seu preco ou use frases como "e um pouquinho caro, mas..."</p>
+            <div class="whatsapp-bubble">
+              Com base no que voce me contou, ficaria assim:<br><br>
+              <strong>50 brigadeiros gourmet de chocolate belga</strong><br>
+              Caixinhas individuais com lacos de cetim<br>
+              Entrega dia [data combinada]<br><br>
+              Valor: <strong>R$ 125,00</strong><br>
+              (sinal de 50% = R$ 62,50 para confirmar a encomenda)<br><br>
+              Tem alguma duvida ou quer algum ajuste?
+              <span class="bubble-time">agora</span>
+              <span class="bubble-check">✓✓</span>
+            </div>
+            <div class="script-tip">
+              <strong>Sempre apresente o preco completo</strong> com todos os detalhes do que esta incluso. Isso evita mal-entendidos e aumenta a percepcao de valor.
+            </div>
+          </div>
+        </div>
+
+        <!-- ETAPA 5 -->
+        <div class="script-step">
+          <div class="script-step-header">
+            <div class="script-step-number">5</div>
+            <div class="script-step-title">Fechamento — Confirmando o Pedido</div>
+            <div class="script-step-emoji">🤝</div>
+          </div>
+          <div class="script-step-body">
+            <p class="script-step-desc">Quando o cliente aceitar, confirme rapidamente antes que ele mude de ideia. Seja clara sobre os proximos passos.</p>
+            <div class="whatsapp-bubble">
+              Que otimo! Fico feliz que tenha gostado 😊<br><br>
+              Para confirmar sua encomenda, preciso do sinal de R$ 62,50 via Pix:<br>
+              Chave: <strong>[sua chave pix]</strong><br><br>
+              Apos a confirmacao do pagamento, sua data fica reservada. Pode enviar o comprovante aqui mesmo.
+              <span class="bubble-time">agora</span>
+              <span class="bubble-check">✓✓</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">08</span>
+        <span class="footer-tag">Checklist + Script de Vendas WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPT PAGINA 3 - ETAPAS FINAIS
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="brand">Kit Doce Lucro</span>
+        <span class="chapter-name">Script de Vendas WhatsApp</span>
+      </div>
+      <div class="page-content">
+
+        <!-- ETAPA 6 -->
+        <div class="script-step">
+          <div class="script-step-header">
+            <div class="script-step-number">6</div>
+            <div class="script-step-title">Confirmacao de Pedido — Resumo por Escrito</div>
+            <div class="script-step-emoji">📋</div>
+          </div>
+          <div class="script-step-body">
+            <p class="script-step-desc">Apos o pagamento do sinal, envie sempre um resumo completo do pedido. Isso evita confusoes e passa muita profissionalismo.</p>
+            <div class="whatsapp-bubble">
+              Pagamento confirmado! Sua encomenda esta garantida 🎉<br><br>
+              <strong>RESUMO DO PEDIDO</strong><br>
+              Cliente: [Nome]<br>
+              Produto: [Descricao completa]<br>
+              Quantidade: [X unidades]<br>
+              Data de entrega: [Data e horario]<br>
+              Local: [Retirada / Entrega em: endereco]<br>
+              Valor total: R$ [valor]<br>
+              Sinal pago: R$ [valor]<br>
+              Saldo a pagar: R$ [valor] (na entrega)<br><br>
+              Qualquer duvida, pode chamar! Ate [data] 😊
+              <span class="bubble-time">agora</span>
+              <span class="bubble-check">✓✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ETAPA 7 -->
+        <div class="script-step">
+          <div class="script-step-header">
+            <div class="script-step-number">7</div>
+            <div class="script-step-title">Pre-entrega — Foto do Produto Pronto</div>
+            <div class="script-step-emoji">📸</div>
+          </div>
+          <div class="script-step-body">
+            <p class="script-step-desc">No dia da entrega, antes de sair, envie uma foto bonita do produto pronto. Isso gera antecipacao e elimina surpresas.</p>
+            <div class="whatsapp-bubble">
+              [Nome], seu pedido ficou lindo! 😍🍫<br><br>
+              [Foto do produto finalizado]<br><br>
+              Estou saindo agora para a entrega. Pode ficar de olho no horario combinado!
+              <span class="bubble-time">agora</span>
+              <span class="bubble-check">✓✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ETAPA 8 -->
+        <div class="script-step">
+          <div class="script-step-header">
+            <div class="script-step-number">8</div>
+            <div class="script-step-title">Pos-venda — Avaliacao e Proxima Compra</div>
+            <div class="script-step-emoji">⭐</div>
+          </div>
+          <div class="script-step-body">
+            <p class="script-step-desc">1-2 dias apos a entrega, mande uma mensagem curta. Esta etapa e ouro puro: gera avaliacoes, fotos e abre a porta para a proxima venda.</p>
+            <div class="whatsapp-bubble">
+              Oi [Nome]! Tudo bem? Queria saber se os doces agradaram a todos 😊<br><br>
+              Se quiser me mandar uma fotinha ou um depoimento, fico muito feliz! Me ajuda muito.
+              <span class="bubble-time">D+1</span>
+              <span class="bubble-check">✓✓</span>
+            </div>
+            <div class="script-tip">
+              <strong>Timing certo:</strong> Espere 1 dia apos a entrega para este contato. Imediato parece ansioso, depois de 3 dias o impacto diminui.
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">09</span>
+        <span class="footer-tag">Checklist + Script de Vendas WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       OBJECOES
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="brand">Kit Doce Lucro</span>
+        <span class="chapter-name">Respostas a Objecoes</span>
+      </div>
+      <div class="page-content">
+
+        <div class="section-title">Respostas para as Principais Objecoes</div>
+        <p class="section-desc">Nao existe venda sem objecao. A diferenca entre fechar ou perder um cliente esta em como voce responde.</p>
+
+        <div class="objection-card">
+          <div class="objection-header">
+            <span class="obj-icon">😬</span>
+            <span>"Ta caro... a fulana faz mais barato"</span>
+          </div>
+          <div class="objection-response">
+            <div class="objection-label">✅ Sua resposta</div>
+            <div class="whatsapp-bubble">
+              Entendo! Existem varios niveis de qualidade no mercado. O meu trabalho usa <strong>[ingrediente diferencial]</strong> e cada peca e feita artesanalmente, o que faz diferenca no sabor e na apresentacao.<br><br>
+              Voce compraria um bolo de aniversario pelo menor preco possivel, ou quer garantir que vai impressionar seus convidados? 😊
+            </div>
+          </div>
+        </div>
+
+        <div class="objection-card">
+          <div class="objection-header">
+            <span class="obj-icon">🤔</span>
+            <span>"Preciso pensar... te aviso depois"</span>
+          </div>
+          <div class="objection-response">
+            <div class="objection-label">✅ Sua resposta</div>
+            <div class="whatsapp-bubble">
+              Claro, sem pressao! So uma informacao importante: trabalho com agenda limitada e a data [data mencionada] ainda esta disponivel, mas nao posso garantir por quanto tempo.<br><br>
+              Tem alguma duvida que eu possa esclarecer pra te ajudar a decidir?
+            </div>
+          </div>
+        </div>
+
+        <div class="objection-card">
+          <div class="objection-header">
+            <span class="obj-icon">💸</span>
+            <span>"Nao tenho dinheiro agora"</span>
+          </div>
+          <div class="objection-response">
+            <div class="objection-label">✅ Sua resposta</div>
+            <div class="whatsapp-bubble">
+              Entendo perfeitamente! Uma opcao e reservar sua data com um sinal menor e o restante na entrega.<br><br>
+              Posso guardar sua data com R$ [valor menor] agora, e o restante so na entrega. Isso funciona pra voce?
+            </div>
+          </div>
+        </div>
+
+        <div class="objection-card">
+          <div class="objection-header">
+            <span class="obj-icon">😕</span>
+            <span>"Nao gostei muito do sabor X, tem outra opcao?"</span>
+          </div>
+          <div class="objection-response">
+            <div class="objection-label">✅ Sua resposta</div>
+            <div class="whatsapp-bubble">
+              Claro! Meu cardapio tem varios sabores. Para o seu perfil, eu recomendaria <strong>[opcao A]</strong> ou <strong>[opcao B]</strong>.<br><br>
+              O [opcao A] e um dos queridinhos dos meus clientes, principalmente quem gosta de [caracteristica]. Qual te atrai mais?
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">10</span>
+        <span class="footer-tag">Checklist + Script de Vendas WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOLLOW-UP E REATIVACAO
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="page-header">
+        <span class="brand">Kit Doce Lucro</span>
+        <span class="chapter-name">Follow-up e Reativacao de Clientes</span>
+      </div>
+      <div class="page-content">
+
+        <div class="section-title">Sequencia de Follow-up</div>
+        <p class="section-desc">Para quem demonstrou interesse mas nao fechou. Seja persistente sem ser inconveniente.</p>
+
+        <table class="followup-table">
+          <thead>
+            <tr>
+              <th>Quando</th>
+              <th>Mensagem</th>
+              <th>Objetivo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="day-badge">Dia 1</span></td>
+              <td>"Oi [Nome]! So passando pra saber se ainda tem interesse ou se posso liberar sua data para outra encomenda 😊"</td>
+              <td>Criar urgencia suave</td>
+            </tr>
+            <tr>
+              <td><span class="day-badge">Dia 3</span></td>
+              <td>"[Nome], vi que voce curtiu meu perfil hoje! Tenho algumas novidades no cardapio que acho que voce vai adorar. Posso te mostrar?"</td>
+              <td>Retomar contato com novidade</td>
+            </tr>
+            <tr>
+              <td><span class="day-badge">Dia 7</span></td>
+              <td>"Ultimo recado, prometo! Ainda tenho 1 data disponivel em [mes]. Se mudar de ideia, estou por aqui 🍫"</td>
+              <td>Fechamento definitivo</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title" style="margin-top:24px;">Reativacao de Clientes Inativos</div>
+        <p class="section-desc">Para clientes que compraram ha mais de 30-60 dias sem retornar.</p>
+
+        <div class="two-col">
+          <div class="whatsapp-bubble">
+            Oi [Nome]! Quanto tempo! Estava pensando em voce 😊<br><br>
+            Lancei alguns sabores novos essa semana e lembrei que voce adora [sabor/produto que comprou].<br><br>
+            Tem alguma data especial chegando?
+          </div>
+          <div class="whatsapp-bubble">
+            Oi [Nome]! Tudo bem? 🍫<br><br>
+            Preparei algo especial para clientes que ja confiaram no meu trabalho: [desconto ou brinde] na proxima encomenda.<br><br>
+            Aproveite, e so ate [data]!
+          </div>
+        </div>
+
+        <div class="routine-box">
+          <h4>Rotina Diaria de Vendas WhatsApp</h4>
+          <p>Apenas 30 minutos por dia sao suficientes para manter sua agenda sempre cheia.</p>
+          <div class="routine-steps">
+            <div class="routine-step">
+              <span class="routine-step-time">08:00</span>
+              <div class="routine-step-text"><strong>Checar e responder mensagens</strong> de clientes pendentes do dia anterior</div>
+            </div>
+            <div class="routine-step">
+              <span class="routine-step-time">10:00</span>
+              <div class="routine-step-text"><strong>Postar story ou foto</strong> de produto no WhatsApp e Instagram</div>
+            </div>
+            <div class="routine-step">
+              <span class="routine-step-time">14:00</span>
+              <div class="routine-step-text"><strong>Follow-up</strong> com quem ficou de dar retorno</div>
+            </div>
+            <div class="routine-step">
+              <span class="routine-step-time">18:00</span>
+              <div class="routine-step-text"><strong>Fechar atendimentos</strong> do dia e confirmar encomendas para a semana</div>
+            </div>
+            <div class="routine-step">
+              <span class="routine-step-time">1x/sem</span>
+              <div class="routine-step-text"><strong>Reativacao</strong> de 3-5 clientes inativos com mensagem personalizada</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="page-footer">
+        <span class="page-num">11</span>
+        <span class="footer-tag">Checklist + Script de Vendas WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CONTRACAPA
+  ════════════════════════════════════════════════════════ -->
+  <div class="page">
+    <div class="back-cover">
+      <h2>
+        Sua agenda
+        <span>sempre cheia.</span>
+      </h2>
+      <p>
+        Voce agora tem o roteiro completo para transformar conversas em vendas. Use este material todo dia e veja seus resultados crescerem.
+      </p>
+      <div class="back-cover-steps">
+        <div class="back-step">
+          <div class="back-step-num">1</div>
+          <div class="back-step-text">
+            <strong>Complete o Checklist</strong>
+            Configure seu perfil profissional nos proximos 7 dias
+          </div>
+        </div>
+        <div class="back-step">
+          <div class="back-step-num">2</div>
+          <div class="back-step-text">
+            <strong>Salve os scripts</strong>
+            Coloque as mensagens nos atalhos do WhatsApp Business
+          </div>
+        </div>
+        <div class="back-step">
+          <div class="back-step-num">3</div>
+          <div class="back-step-text">
+            <strong>Pratique a rotina diaria</strong>
+            30 minutos por dia e tudo que voce precisa
+          </div>
+        </div>
+        <div class="back-step">
+          <div class="back-step-num">4</div>
+          <div class="back-step-text">
+            <strong>Acompanhe na Planilha</strong>
+            Registre cada venda e veja seu crescimento em tempo real
+          </div>
+        </div>
+      </div>
+      <div class="back-brand">Kit Doce Lucro</div>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+</body>
+</html>

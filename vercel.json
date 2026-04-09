@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "pagina_de_vendas.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/pagina_de_vendas.html" },
+    { "src": "/guia", "dest": "/guia-precificacao.html" },
+    { "src": "/ebook", "dest": "/ebook-receitas.html" },
+    { "src": "/checklist", "dest": "/checklist-script-vendas.html" },
+    { "src": "/painel", "dest": "/planilha-guia.html" },
+    { "src": "/obrigado", "dest": "/obrigado.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

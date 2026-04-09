@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acesso ao Kit — Kit Doce Lucro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cacau:    #1E0F05;
+    --creme:    #F5EDD6;
+    --baunilha: #FDF8EF;
+    --dourado:  #C9973A;
+    --terracota:#B85C38;
+    --caramelo: #7C4A2D;
+    --cinza:    #7A6B60;
+    --verde:    #2D7C4A;
+    --ff-d: 'Poppins', sans-serif;
+    --ff-b: 'Inter', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--ff-b);
+    background: var(--baunilha);
+    color: var(--cacau);
+    min-height: 100vh;
+  }
+
+  /* ── TOPO ─────────────────────────────────────────────────────── */
+  .topo {
+    background: linear-gradient(135deg, #1E0F05 0%, #3a1a08 100%);
+    padding: 48px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .topo::before {
+    content: '';
+    position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 400px;
+    background: radial-gradient(circle, rgba(201,151,58,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .check-circle {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, #1e7a40, #2D7C4A);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 0 0 8px rgba(45,124,74,0.2);
+    font-size: 32px;
+  }
+  .topo h1 {
+    font-family: var(--ff-d);
+    font-size: 30px; font-weight: 800;
+    color: #fff; line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .topo h1 span { color: var(--dourado); }
+  .topo p {
+    font-size: 15px; color: var(--creme);
+    max-width: 460px; margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  /* ── INSTRUCAO ─────────────────────────────────────────────────── */
+  .instrucao {
+    background: var(--creme);
+    padding: 14px 24px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--caramelo);
+    font-weight: 500;
+  }
+
+  /* ── GRID ──────────────────────────────────────────────────────── */
+  .grid-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 64px;
+  }
+  .section-title {
+    font-family: var(--ff-d);
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 20px;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .card {
+    background: #fff;
+    border: 1.5px solid #EDE5D6;
+    border-radius: 14px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
+  }
+  .card:hover {
+    box-shadow: 0 6px 24px rgba(30,15,5,0.10);
+    transform: translateY(-2px);
+    border-color: var(--dourado);
+  }
+  .card-num {
+    width: 52px; height: 52px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--ff-d);
+    font-size: 22px; font-weight: 800;
+    color: var(--dourado);
+    background: linear-gradient(135deg, #1E0F05, #3a1a08);
+    flex-shrink: 0;
+  }
+  .card-body { flex: 1; }
+  .card-tag {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 4px;
+  }
+  .card-body h3 {
+    font-family: var(--ff-d);
+    font-size: 16px; font-weight: 700;
+    color: var(--cacau);
+    margin-bottom: 4px;
+  }
+  .card-body p {
+    font-size: 13px;
+    color: var(--cinza);
+    line-height: 1.5;
+  }
+  .card-arrow {
+    font-size: 20px;
+    color: var(--dourado);
+    flex-shrink: 0;
+    transition: transform 0.18s;
+  }
+  .card:hover .card-arrow { transform: translateX(4px); }
+
+  /* variacao de cores dos numeros */
+  .card:nth-child(2) .card-num { background: linear-gradient(135deg, #7C4A2D, #B85C38); }
+  .card:nth-child(3) .card-num { background: linear-gradient(135deg, #1e7a40, #2D7C4A); }
+  .card:nth-child(4) .card-num { background: linear-gradient(135deg, #2D5C7C, #3a7a9c); }
+
+  /* ── CARD BONUS (dashboard) ───────────────────────────────────── */
+  .card-bonus {
+    background: linear-gradient(135deg, #1E0F05, #3a1a08);
+    border-color: var(--dourado);
+    position: relative;
+    overflow: hidden;
+  }
+  .card-bonus::before {
+    content: '';
+    position: absolute; top: -30px; right: -30px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(201,151,58,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .card-bonus .card-tag  { color: var(--dourado); opacity: 0.8; }
+  .card-bonus h3         { color: #fff; }
+  .card-bonus p          { color: var(--creme); }
+  .card-bonus .card-arrow { color: var(--dourado); }
+  .card-bonus .card-num {
+    background: var(--dourado);
+    color: var(--cacau);
+    font-size: 20px;
+  }
+
+  /* ── DICA ──────────────────────────────────────────────────────── */
+  .dica {
+    background: var(--creme);
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-size: 13px;
+    color: var(--caramelo);
+    line-height: 1.65;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .dica-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── FOOTER ────────────────────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--cinza);
+    border-top: 1px solid var(--creme);
+  }
+  footer strong { color: var(--caramelo); }
+</style>
+</head>
+<body>
+
+<!-- Topo -->
+<div class="topo">
+  <div class="check-circle">&#10003;</div>
+  <h1>Compra confirmada!<br><span>Seu kit esta pronto.</span></h1>
+  <p>Abaixo voce encontra o acesso a todos os materiais do Kit Doce Lucro. Clique em cada um para comecar.</p>
+</div>
+
+<!-- Instrucao -->
+<div class="instrucao">
+  Salve esta pagina nos favoritos para acessar seus materiais sempre que precisar.
+</div>
+
+<!-- Cards -->
+<div class="grid-wrap">
+
+  <div class="section-title">Seus materiais</div>
+
+  <div class="cards">
+
+    <a class="card" href="/guia-precificacao.html">
+      <div class="card-num">01</div>
+      <div class="card-body">
+        <div class="card-tag">PDF Digital</div>
+        <h3>Guia de Precificacao para Confeiteiras</h3>
+        <p>O metodo completo para calcular o preco certo dos seus doces e parar de vender abaixo do custo.</p>
+      </div>
+      <div class="card-arrow">&#8594;</div>
+    </a>
+
+    <a class="card" href="/ebook-receitas.html">
+      <div class="card-num">02</div>
+      <div class="card-body">
+        <div class="card-tag">PDF Digital</div>
+        <h3>50 Receitas Gourmet Lucrativas</h3>
+        <p>Brigadeiros, bolos, trufas e muito mais. Receitas testadas com custo e margem de lucro de cada uma.</p>
+      </div>
+      <div class="card-arrow">&#8594;</div>
+    </a>
+
+    <a class="card" href="/checklist-script-vendas.html">
+      <div class="card-num">03</div>
+      <div class="card-body">
+        <div class="card-tag">PDF Digital</div>
+        <h3>Checklist + Script de Vendas WhatsApp</h3>
+        <p>Scripts prontos para responder clientes, contornar objecoes e fechar pedidos pelo WhatsApp.</p>
+      </div>
+      <div class="card-arrow">&#8594;</div>
+    </a>
+
+    <a class="card" href="/planilha-guia.html">
+      <div class="card-num">04</div>
+      <div class="card-body">
+        <div class="card-tag">Planilha Google Sheets</div>
+        <h3>Planilha de Gestao Financeira</h3>
+        <p>Calcule custos, precifique produtos e acompanhe suas metas de lucro. Ja vem preenchida e pronta para usar.</p>
+      </div>
+      <div class="card-arrow">&#8594;</div>
+    </a>
+
+  </div>
+
+  <div class="dica">
+    <div class="dica-icon">&#128204;</div>
+    <div>
+      <strong>Dica:</strong> comece pelo Material 01 (Guia de Precificacao) e depois abra a Planilha. Em menos de 1 hora voce ja tera o preco correto de todos os seus produtos calculado.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Kit Doce Lucro</strong> &mdash; Todos os direitos reservados &copy; 2026
+</footer>
+
+</body>
+</html>
