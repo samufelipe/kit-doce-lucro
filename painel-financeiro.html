@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 /* ═══════════════════════════════════════════════
    TOKENS
@@ -1627,6 +1628,14 @@ select.form-input-dark option { background: #1e1208; color: #fff; }
 
 <script>
 /* ═══════════════════════════════════════════════
+   SUPABASE
+═══════════════════════════════════════════════ */
+const _sb = window.supabase.createClient(
+  'https://crlprwbuqyosbeefdlfv.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNybHByd2J1cXlvc2JlZWZkbGZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNTYzMjQsImV4cCI6MjA5MDczMjMyNH0.QVMTpxISqNSHCJfUIn1PWXXmbKh_AZQ2iXvcxB5JeHw'
+);
+
+/* ═══════════════════════════════════════════════
    DADOS & STORAGE
 ═══════════════════════════════════════════════ */
 const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
@@ -1638,36 +1647,51 @@ let editingVendaId = null;
 let editingProdutoId = null;
 let editingMetaKey = null;
 
-function storageKey(suffix) {
-  return `dl_${currentUser.email}_${suffix}`;
+// Mappers Supabase → formato interno
+function _mapVenda(r) {
+  return {
+    id: r.id, data: r.data,
+    cliente: r.cliente || '',
+    produtoNome: r.produto_nome,
+    produtoId: r.produto_id,
+    qtd: r.quantidade,
+    preco: +r.preco_unitario,
+    custo: +r.custo_unitario
+  };
+}
+function _mapProduto(r) {
+  return {
+    id: r.id, nome: r.nome, categoria: r.categoria,
+    custo: +(+r.custo_ingredientes + +r.custo_embalagem + +r.custo_indireto),
+    preco: +r.preco_venda
+  };
 }
 
-function getData(key) {
-  try { return JSON.parse(localStorage.getItem(storageKey(key))) || []; } catch { return []; }
+async function getVendas() {
+  const { data, error } = await _sb.from('vendas')
+    .select('*').order('data', { ascending: false });
+  if (error) { console.error('getVendas', error); return []; }
+  return (data || []).map(_mapVenda);
 }
-function getObj(key, def={}) {
-  try { return JSON.parse(localStorage.getItem(storageKey(key))) || def; } catch { return def; }
+async function getProdutos() {
+  const { data, error } = await _sb.from('produtos')
+    .select('*').eq('ativo', true).order('nome');
+  if (error) { console.error('getProdutos', error); return []; }
+  return (data || []).map(_mapProduto);
 }
-function setData(key, val) {
-  localStorage.setItem(storageKey(key), JSON.stringify(val));
+async function getMetas() {
+  const { data, error } = await _sb.from('metas').select('*');
+  if (error) { console.error('getMetas', error); return {}; }
+  const obj = {};
+  (data || []).forEach(r => {
+    obj[`${r.ano}-${String(r.mes).padStart(2,'0')}`] = +r.meta_faturamento;
+  });
+  return obj;
 }
-
-function getVendas()   { return getData('vendas'); }
-function getProdutos() { return getData('produtos'); }
-function getMetas()    { return getObj('metas', {}); }
-
-function saveVendas(v)   { setData('vendas', v); }
-function saveProdutos(p) { setData('produtos', p); }
-function saveMetas(m)    { setData('metas', m); }
 
 /* ═══════════════════════════════════════════════
    AUTH
 ═══════════════════════════════════════════════ */
-function getUsers() {
-  try { return JSON.parse(localStorage.getItem('dl_users')) || {}; } catch { return {}; }
-}
-function saveUsers(u) { localStorage.setItem('dl_users', JSON.stringify(u)); }
-
 function switchTab(tab) {
   document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
@@ -1678,98 +1702,70 @@ function switchTab(tab) {
 
 function showError(msg) {
   const el = document.getElementById('login-error');
-  el.textContent = msg;
-  el.style.display = 'block';
+  el.textContent = msg; el.style.display = 'block';
+}
+function setLoginLoading(formId, loading, label) {
+  const btn = document.querySelector(`#${formId} .btn-primary`);
+  if (!btn) return;
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Aguarde...' : label;
 }
 
-function doLogin() {
+async function doLogin() {
   const email = document.getElementById('login-email').value.trim().toLowerCase();
   const pass  = document.getElementById('login-password').value;
   if (!email || !pass) { showError('Preencha e-mail e senha.'); return; }
-  const users = getUsers();
-  if (!users[email] || users[email].password !== btoa(pass)) {
-    showError('E-mail ou senha incorretos.');
-    return;
-  }
-  currentUser = { email, name: users[email].name };
-  localStorage.setItem('dl_session', JSON.stringify(currentUser));
-  initApp();
+  setLoginLoading('form-login', true, 'Entrar');
+  const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
+  setLoginLoading('form-login', false, 'Entrar');
+  if (error) { showError('E-mail ou senha incorretos.'); return; }
+  currentUser = {
+    id: data.user.id,
+    email: data.user.email,
+    name: data.user.user_metadata?.name || data.user.email.split('@')[0]
+  };
+  await initApp();
 }
 
-function doRegister() {
+async function doRegister() {
   const name  = document.getElementById('reg-name').value.trim();
   const email = document.getElementById('reg-email').value.trim().toLowerCase();
   const pass  = document.getElementById('reg-password').value;
   if (!name)  { showError('Informe seu nome.'); return; }
   if (!email || !email.includes('@')) { showError('E-mail inválido.'); return; }
   if (pass.length < 6) { showError('Senha deve ter ao menos 6 caracteres.'); return; }
-  const users = getUsers();
-  if (users[email]) { showError('Esse e-mail já possui uma conta.'); return; }
-  users[email] = { name, password: btoa(pass) };
-  saveUsers(users);
-  currentUser = { email, name };
-  localStorage.setItem('dl_session', JSON.stringify(currentUser));
-  // Seed demo data
-  seedDemoData();
-  initApp();
+  setLoginLoading('form-register', true, 'Criar Conta');
+  const { data, error } = await _sb.auth.signUp({
+    email, password: pass, options: { data: { name } }
+  });
+  setLoginLoading('form-register', false, 'Criar Conta');
+  if (error) { showError(error.message); return; }
+  if (data.session) {
+    currentUser = { id: data.user.id, email, name };
+    await initApp();
+  } else {
+    showError('Verifique seu e-mail para confirmar o cadastro e depois faça login.');
+  }
 }
 
-function doLogout() {
-  localStorage.removeItem('dl_session');
+async function doLogout() {
+  await _sb.auth.signOut();
   currentUser = null;
-  document.getElementById('app-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display  = 'none';
   document.getElementById('login-screen').style.display = 'flex';
 }
 
-function checkSession() {
-  try {
-    const s = JSON.parse(localStorage.getItem('dl_session'));
-    if (s && s.email && getUsers()[s.email]) {
-      currentUser = s;
-      return true;
-    }
-  } catch {}
+async function checkSession() {
+  const { data: { session } } = await _sb.auth.getSession();
+  if (session) {
+    currentUser = {
+      id: session.user.id,
+      email: session.user.email,
+      name: session.user.user_metadata?.name || session.user.email.split('@')[0]
+    };
+    return true;
+  }
   return false;
-}
-
-function seedDemoData() {
-  // Produtos de exemplo
-  const prods = [
-    { id: uid(), nome: 'Brigadeiro Gourmet (cx 12 un.)', custo: 18, preco: 45, categoria: 'Brigadeiros' },
-    { id: uid(), nome: 'Bolo Naked Cake 3 camadas', custo: 42, preco: 120, categoria: 'Bolos' },
-    { id: uid(), nome: 'Trufa Belga (cx 9 un.)', custo: 22, preco: 65, categoria: 'Trufas' },
-    { id: uid(), nome: 'Bolo no Pote (6 un.)', custo: 15, preco: 42, categoria: 'Bolos no Pote' },
-  ];
-  saveProdutos(prods);
-
-  // Vendas de exemplo (últimos 3 meses)
-  const hoje = new Date();
-  const vendas = [];
-  const clientes = ['Maria Silva','Juliana Rocha','Ana Carvalho','Fernanda Lima','Patricia Gomes',
-                    'Camila Souza','Beatriz Costa','Renata Alves','Thais Pereira','Larissa Santos'];
-  for (let i = 0; i < 22; i++) {
-    const d = new Date(hoje);
-    d.setDate(d.getDate() - Math.floor(Math.random() * 90));
-    const p = prods[Math.floor(Math.random() * prods.length)];
-    const qtd = Math.floor(Math.random() * 3) + 1;
-    const precoVar = p.preco * (0.9 + Math.random() * 0.2);
-    vendas.push({
-      id: uid(), data: d.toISOString().split('T')[0],
-      produtoId: p.id, produtoNome: p.nome,
-      qtd, preco: +precoVar.toFixed(2),
-      custo: p.custo, cliente: clientes[Math.floor(Math.random() * clientes.length)]
-    });
-  }
-  vendas.sort((a,b) => b.data.localeCompare(a.data));
-  saveVendas(vendas);
-
-  // Metas
-  const metas = {};
-  const ano = hoje.getFullYear();
-  for (let m = 0; m < 12; m++) {
-    metas[`${ano}-${String(m+1).padStart(2,'0')}`] = 1500 + m * 200;
-  }
-  saveMetas(metas);
 }
 
 /* ═══════════════════════════════════════════════
@@ -1803,7 +1799,7 @@ function toast(msg, type='success') {
 /* ═══════════════════════════════════════════════
    NAVEGAÇÃO
 ═══════════════════════════════════════════════ */
-function goTo(page) {
+async function goTo(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
@@ -1814,11 +1810,11 @@ function goTo(page) {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebar-overlay').classList.remove('open');
 
-  if (page === 'dashboard')   renderDashboard();
-  if (page === 'vendas')      renderVendas();
-  if (page === 'produtos')    renderProdutos();
-  if (page === 'metas')       renderMetas();
-  if (page === 'clientes')    renderClientes();
+  if (page === 'dashboard')   await renderDashboard();
+  if (page === 'vendas')      await renderVendas();
+  if (page === 'produtos')    await renderProdutos();
+  if (page === 'metas')       await renderMetas();
+  if (page === 'clientes')    await renderClientes();
   if (page === 'calculadora') calcPreco();
 }
 
@@ -1830,8 +1826,8 @@ function toggleSidebar() {
 /* ═══════════════════════════════════════════════
    MODAIS
 ═══════════════════════════════════════════════ */
-function openModal(id) {
-  if (id === 'modal-venda') prepVendaModal();
+async function openModal(id) {
+  if (id === 'modal-venda') await prepVendaModal();
   if (id === 'modal-produto') prepProdutoModal();
   document.getElementById(id).classList.add('open');
 }
@@ -1867,8 +1863,8 @@ function buildMonthOptions(selectId, selected) {
   }
 }
 
-function renderDashboard() {
-  const allVendas = getVendas();
+async function renderDashboard() {
+  const allVendas = await getVendas();
   const vendas = filterByDRP(allVendas, DRP.dash);
   // For chart: use start month
   const startD = DRP.dash.start || new Date();
@@ -1913,7 +1909,7 @@ function renderDashboard() {
     '<tr><td colspan="5" style="text-align:center;padding:32px;color:rgba(255,255,255,0.3)">Nenhuma venda neste mês</td></tr>';
 
   // Meta
-  const metas = getMetas();
+  const metas = await getMetas();
   const metaVal = metas[mesKey] || 0;
   const pct = metaVal ? Math.min((fat / metaVal) * 100, 100) : 0;
   const cor = pct >= 100 ? 'green' : pct >= 60 ? 'gold' : 'red';
@@ -2051,9 +2047,9 @@ function renderTopProdutos(vendas) {
 /* ═══════════════════════════════════════════════
    VENDAS
 ═══════════════════════════════════════════════ */
-function renderVendas() {
+async function renderVendas() {
   const prodFil = document.getElementById('vendas-produto-filter').value;
-  let vendas = filterByDRP(getVendas(), DRP.vendas);
+  let vendas = filterByDRP(await getVendas(), DRP.vendas);
   if (prodFil) vendas = vendas.filter(v => v.produtoId === prodFil);
   vendas.sort((a,b) => b.data.localeCompare(a.data));
 
@@ -2092,8 +2088,8 @@ function renderVendas() {
   }).join('');
 }
 
-function prepVendaModal(v) {
-  const prods = getProdutos();
+async function prepVendaModal(v) {
+  const prods = await getProdutos();
   const sel = document.getElementById('venda-produto');
   sel.innerHTML = '<option value="">Selecione o produto</option>';
   prods.forEach(p => {
@@ -2111,8 +2107,8 @@ function prepVendaModal(v) {
   calcVendaPreview();
 }
 
-function calcVendaPreview() {
-  const prods = getProdutos();
+async function calcVendaPreview() {
+  const prods = await getProdutos();
   const prodId = document.getElementById('venda-produto').value;
   const prod = prods.find(p => p.id === prodId);
   const preco = +document.getElementById('venda-preco').value;
@@ -2138,51 +2134,61 @@ function calcVendaPreview() {
   }
 }
 
-function salvarVenda() {
-  const prodId   = document.getElementById('venda-produto').value;
-  const qtd      = +document.getElementById('venda-qtd').value;
-  const preco    = +document.getElementById('venda-preco').value;
-  const cliente  = document.getElementById('venda-cliente').value.trim();
-  const data     = document.getElementById('venda-data').value;
-  if (!prodId)  { toast('Selecione o produto.', 'error'); return; }
-  if (!qtd || qtd < 1) { toast('Informe a quantidade.', 'error'); return; }
-  if (!preco)   { toast('Informe o valor cobrado.', 'error'); return; }
-  if (!data)    { toast('Informe a data.', 'error'); return; }
+async function salvarVenda() {
+  const prodId  = document.getElementById('venda-produto').value;
+  const qtd     = +document.getElementById('venda-qtd').value;
+  const preco   = +document.getElementById('venda-preco').value;
+  const cliente = document.getElementById('venda-cliente').value.trim();
+  const data    = document.getElementById('venda-data').value;
+  if (!prodId)       { toast('Selecione o produto.', 'error'); return; }
+  if (!qtd || qtd < 1){ toast('Informe a quantidade.', 'error'); return; }
+  if (!preco)        { toast('Informe o valor cobrado.', 'error'); return; }
+  if (!data)         { toast('Informe a data.', 'error'); return; }
 
-  const prod = getProdutos().find(p => p.id === prodId);
-  const vendas = getVendas();
+  const prods = await getProdutos();
+  const prod  = prods.find(p => p.id === prodId);
+  const payload = {
+    user_id: currentUser.id,
+    produto_id: prodId, produto_nome: prod.nome,
+    quantidade: qtd, preco_unitario: preco,
+    custo_unitario: prod.custo, cliente, data, status: 'Pago'
+  };
+
+  let error;
   if (editingVendaId) {
-    const idx = vendas.findIndex(v => v.id === editingVendaId);
-    vendas[idx] = { ...vendas[idx], produtoId: prodId, produtoNome: prod.nome, qtd, preco, cliente, data, custo: prod.custo };
-    toast('Venda atualizada.');
+    ({ error } = await _sb.from('vendas').update(payload).eq('id', editingVendaId));
+    if (!error) toast('Venda atualizada.');
   } else {
-    vendas.unshift({ id: uid(), produtoId: prodId, produtoNome: prod.nome, qtd, preco, cliente, data, custo: prod.custo });
-    toast('Venda registrada!');
+    ({ error } = await _sb.from('vendas').insert(payload));
+    if (!error) toast('Venda registrada!');
   }
-  saveVendas(vendas);
+  if (error) { toast('Erro ao salvar venda.', 'error'); console.error(error); return; }
   closeModal('modal-venda');
-  renderVendas();
+  await renderVendas();
 }
 
-function editVenda(id) {
+async function editVenda(id) {
   editingVendaId = id;
-  const v = getVendas().find(v => v.id === id);
-  prepVendaModal(v);
-  openModal('modal-venda');
+  const vendas = await getVendas();
+  const v = vendas.find(v => v.id === id);
+  await prepVendaModal(v);
+  document.getElementById('modal-venda').classList.add('open');
 }
 
-function deletarVenda(id) {
+async function deletarVenda(id) {
   if (!confirm('Remover esta venda?')) return;
-  saveVendas(getVendas().filter(v => v.id !== id));
+  const { error } = await _sb.from('vendas').delete().eq('id', id);
+  if (error) { toast('Erro ao remover.', 'error'); return; }
   toast('Venda removida.');
-  renderVendas();
+  await renderVendas();
 }
 
-function updateVendaProdutoFilter() {
+async function updateVendaProdutoFilter() {
   const sel = document.getElementById('vendas-produto-filter');
   const current = sel.value;
   sel.innerHTML = '<option value="">Todos os produtos</option>';
-  getProdutos().forEach(p => {
+  const prods = await getProdutos();
+  prods.forEach(p => {
     const o = document.createElement('option');
     o.value = p.id; o.textContent = p.nome;
     if (p.id === current) o.selected = true;
@@ -2193,8 +2199,8 @@ function updateVendaProdutoFilter() {
 /* ═══════════════════════════════════════════════
    PRODUTOS
 ═══════════════════════════════════════════════ */
-function renderProdutos() {
-  const prods = getProdutos();
+async function renderProdutos() {
+  const prods = await getProdutos();
   const grid  = document.getElementById('produtos-grid');
   const empty = document.getElementById('produtos-empty');
   if (!prods.length) {
@@ -2249,7 +2255,7 @@ function calcProdPreview() {
   }
 }
 
-function salvarProduto() {
+async function salvarProduto() {
   const nome      = document.getElementById('prod-nome').value.trim();
   const custo     = +document.getElementById('prod-custo').value;
   const preco     = +document.getElementById('prod-preco').value;
@@ -2258,45 +2264,54 @@ function salvarProduto() {
   if (!custo) { toast('Informe o custo de produção.', 'error'); return; }
   if (!preco) { toast('Informe o preço de venda.', 'error'); return; }
 
-  const prods = getProdutos();
+  const payload = {
+    user_id: currentUser.id,
+    nome, categoria,
+    custo_ingredientes: custo,
+    custo_embalagem: 0,
+    custo_indireto: 0,
+    preco_venda: preco
+  };
+  let error;
   if (editingProdutoId) {
-    const idx = prods.findIndex(p => p.id === editingProdutoId);
-    prods[idx] = { ...prods[idx], nome, custo, preco, categoria };
-    toast('Produto atualizado.');
+    ({ error } = await _sb.from('produtos').update(payload).eq('id', editingProdutoId));
+    if (!error) toast('Produto atualizado.');
   } else {
-    prods.push({ id: uid(), nome, custo, preco, categoria });
-    toast('Produto cadastrado!');
+    ({ error } = await _sb.from('produtos').insert(payload));
+    if (!error) toast('Produto cadastrado!');
   }
-  saveProdutos(prods);
+  if (error) { toast('Erro ao salvar produto.', 'error'); console.error(error); return; }
   closeModal('modal-produto');
-  renderProdutos();
-  updateVendaProdutoFilter();
+  await renderProdutos();
+  await updateVendaProdutoFilter();
 }
 
-function editProduto(id) {
+async function editProduto(id) {
   editingProdutoId = id;
-  const p = getProdutos().find(p => p.id === id);
+  const prods = await getProdutos();
+  const p = prods.find(p => p.id === id);
   prepProdutoModal(p);
-  openModal('modal-produto');
+  document.getElementById('modal-produto').classList.add('open');
 }
 
-function deletarProduto(id) {
+async function deletarProduto(id) {
   if (!confirm('Remover este produto?\nVendas existentes não serão afetadas.')) return;
-  saveProdutos(getProdutos().filter(p => p.id !== id));
+  const { error } = await _sb.from('produtos').update({ ativo: false }).eq('id', id);
+  if (error) { toast('Erro ao remover.', 'error'); return; }
   toast('Produto removido.');
-  renderProdutos();
+  await renderProdutos();
 }
 
 /* ═══════════════════════════════════════════════
    METAS
 ═══════════════════════════════════════════════ */
-function renderMetas() {
+async function renderMetas() {
   const ano  = +document.getElementById('meta-ano').value;
   const hoje = new Date();
   const mesAtual = new Date().getMonth() + 1;
   const anoAtual = new Date().getFullYear();
-  const metas  = getMetas();
-  const vendas = getVendas();
+  const metas  = await getMetas();
+  const vendas = await getVendas();
   const grid   = document.getElementById('meta-year-grid');
 
   grid.innerHTML = MONTHS.map((nome, i) => {
@@ -2336,15 +2351,20 @@ function openModalMeta(key, nome, valor) {
   document.getElementById('modal-meta').classList.add('open');
 }
 
-function salvarMeta() {
+async function salvarMeta() {
   const valor = +document.getElementById('meta-valor').value;
   if (!valor || valor <= 0) { toast('Informe um valor válido.', 'error'); return; }
-  const metas = getMetas();
-  metas[editingMetaKey] = valor;
-  saveMetas(metas);
+  const [anoStr, mesStr] = editingMetaKey.split('-');
+  const { error } = await _sb.from('metas').upsert({
+    user_id: currentUser.id,
+    ano: +anoStr, mes: +mesStr,
+    meta_faturamento: valor,
+    meta_vendas: 0
+  }, { onConflict: 'user_id,mes,ano' });
+  if (error) { toast('Erro ao salvar meta.', 'error'); console.error(error); return; }
   toast('Meta salva!');
   closeModal('modal-meta');
-  renderMetas();
+  await renderMetas();
 }
 
 /* ═══════════════════════════════════════════════
@@ -2492,14 +2512,14 @@ function setPreset(code, label) {
   updateDRPRangeLabel(DRP.dash, 'drp-range-label');
   document.getElementById('drp-label').textContent = label;
   DRP.dash.start = s; DRP.dash.end = e;
-  closeDRP(); renderDashboard();
+  closeDRP(); renderDashboard(); // async, fire-and-forget ok here
 }
 function applyDRP() {
   if (!DRP.dash.tempStart || !DRP.dash.tempEnd) { toast('Selecione início e fim do período.','error'); return; }
   DRP.dash.start = DRP.dash.tempStart; DRP.dash.end = DRP.dash.tempEnd;
   const s = drpFmtDisp(DRP.dash.start), e = drpFmtDisp(DRP.dash.end);
   document.getElementById('drp-label').textContent = s === e ? s : `${s} – ${e}`;
-  closeDRP(); renderDashboard();
+  closeDRP(); renderDashboard(); // async, fire-and-forget ok here
 }
 
 // VENDAS DRP
@@ -2536,14 +2556,14 @@ function setPresetVendas(code, label) {
   updateDRPRangeLabel(DRP.vendas, 'drp-vendas-range-label');
   document.getElementById('drp-vendas-label').textContent = label;
   DRP.vendas.start = s; DRP.vendas.end = e;
-  closeDRPVendas(); renderVendas();
+  closeDRPVendas(); renderVendas(); // async, fire-and-forget ok here
 }
 function applyDRPVendas() {
   if (!DRP.vendas.tempStart || !DRP.vendas.tempEnd) { toast('Selecione início e fim.','error'); return; }
   DRP.vendas.start = DRP.vendas.tempStart; DRP.vendas.end = DRP.vendas.tempEnd;
   const s = drpFmtDisp(DRP.vendas.start), e = drpFmtDisp(DRP.vendas.end);
   document.getElementById('drp-vendas-label').textContent = s === e ? s : `${s} – ${e}`;
-  closeDRPVendas(); renderVendas();
+  closeDRPVendas(); renderVendas(); // async, fire-and-forget ok here
 }
 
 function closeAllDRP() {
@@ -2566,9 +2586,9 @@ function filterByDRP(vendas, state) {
 /* ═══════════════════════════════════════════════
    CLIENTES
 ═══════════════════════════════════════════════ */
-function renderClientes() {
+async function renderClientes() {
   const search = (document.getElementById('cliente-search')?.value || '').toLowerCase().trim();
-  const vendas = getVendas();
+  const vendas = await getVendas();
   const map = {};
   vendas.forEach(v => {
     if (!v.cliente) return;
@@ -2640,7 +2660,7 @@ function calcPreco() {
   }
 }
 
-function salvarProdutoCalc() {
+async function salvarProdutoCalc() {
   const nome  = document.getElementById('calc-nome').value.trim();
   const ing   = +document.getElementById('calc-ingredientes').value || 0;
   const emb   = +document.getElementById('calc-embalagem').value   || 0;
@@ -2652,27 +2672,31 @@ function salvarProdutoCalc() {
   const custo = ing + emb + ind + mao;
   const preco = custo > 0 ? +(custo / (1 - marg/100) / (1 - taxa/100)).toFixed(2) : 0;
   if (!preco) { toast('Informe os custos antes de salvar.','error'); return; }
-  const prods = getProdutos();
-  prods.push({ id: uid(), nome, custo: +custo.toFixed(2), preco, categoria: 'Outros' });
-  saveProdutos(prods);
+  const { error } = await _sb.from('produtos').insert({
+    user_id: currentUser.id,
+    nome, categoria: 'Outros',
+    custo_ingredientes: +ing.toFixed(2),
+    custo_embalagem: +emb.toFixed(2),
+    custo_indireto: +(ind + mao).toFixed(2),
+    preco_venda: preco
+  });
+  if (error) { toast('Erro ao salvar.', 'error'); console.error(error); return; }
   toast('Produto salvo!');
-  updateVendaProdutoFilter();
+  await updateVendaProdutoFilter();
 }
 
 /* ═══════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════ */
-function initApp() {
+async function initApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app-screen').style.display   = 'block';
   document.getElementById('sidebar-name').textContent  = currentUser.name;
   document.getElementById('sidebar-email').textContent = currentUser.email;
 
-  // Initialize DRP with current month defaults
   drpInit('dash',   'mes_atual');
   drpInit('vendas', 'mes_atual');
 
-  // Year options for metas
   const anoSel = document.getElementById('meta-ano');
   anoSel.innerHTML = '';
   const y = new Date().getFullYear();
@@ -2683,14 +2707,14 @@ function initApp() {
     anoSel.appendChild(o);
   });
 
-  updateVendaProdutoFilter();
-  renderDashboard();
+  await updateVendaProdutoFilter();
+  await renderDashboard();
 }
 
 // Boot
-if (checkSession()) {
-  initApp();
-}
+(async () => {
+  if (await checkSession()) await initApp();
+})();
 </script>
 </body>
 </html>
