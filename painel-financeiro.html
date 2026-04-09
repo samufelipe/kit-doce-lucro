@@ -2551,7 +2551,9 @@ function closeAllDRP() {
   ['drp-btn','drp-vendas-btn'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('open'); });
 }
 document.addEventListener('click', e => {
-  if (!e.target.closest('.drp-wrap')) closeAllDRP();
+  const path = e.composedPath ? e.composedPath() : [];
+  const inDrp = path.some(el => el.classList && el.classList.contains('drp-wrap'));
+  if (!inDrp) closeAllDRP();
 });
 
 /* helpers: filter vendas by DRP date range */
