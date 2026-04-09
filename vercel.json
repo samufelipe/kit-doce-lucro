@@ -9,6 +9,7 @@
     { "src": "/obrigado", "dest": "/obrigado.html" },
     { "src": "/obrigado-completo", "dest": "/obrigado-completo.html" },
     { "src": "/bem-vinda", "dest": "/bem-vinda.html" },
+    { "src": "/app", "dest": "/painel-financeiro.html" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
