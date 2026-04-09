@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "pagina_de_vendas.html", "use": "@vercel/static" }
-  ],
   "routes": [
     { "src": "/", "dest": "/pagina_de_vendas.html" },
     { "src": "/guia", "dest": "/guia-precificacao.html" },
