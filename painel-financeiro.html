@@ -918,9 +918,10 @@ select.form-input-dark option { background: #1e1208; color: #fff; }
 .drp-selected-range strong { color: var(--dourado); }
 .drp-actions { display: flex; gap: 8px; }
 @media (max-width: 700px) {
-  .drp-panel { min-width: calc(100vw - 32px); right: -8px; }
+  .drp-panel { min-width: 0; width: calc(100vw - 32px); max-width: calc(100vw - 32px); right: auto; left: 50%; transform: translateX(-50%); }
   .drp-presets { display: none; }
   .drp-months-wrap { grid-template-columns: 1fr; }
+  .drp-footer { flex-wrap: wrap; }
 }
 
 /* ═══════════════════════════════════════════════
@@ -1028,7 +1029,11 @@ select.form-input-dark option { background: #1e1208; color: #fff; }
   .form-row { grid-template-columns: 1fr; }
   .meta-year-grid { grid-template-columns: 1fr; }
   .produtos-grid { grid-template-columns: 1fr; }
-  .page-header { flex-direction: column; align-items: flex-start; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .calc-grid { grid-template-columns: 1fr; }
+  .clientes-grid { grid-template-columns: 1fr; }
+  table { min-width: 520px; }
+  .table-wrap { -webkit-overflow-scrolling: touch; }
 }
 @media (max-width: 480px) {
   .kpi-grid { grid-template-columns: 1fr; }
@@ -1990,7 +1995,19 @@ function drawBarChart(canvas, labels, values, color) {
     grad.addColorStop(1, color + '33');
     ctx.fillStyle = grad;
     ctx.beginPath();
-    ctx.roundRect(x, y, barW, bH, [3, 3, 0, 0]);
+    if (bH > 3) {
+      const r = 3;
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + barW - r, y);
+      ctx.quadraticCurveTo(x + barW, y, x + barW, y + r);
+      ctx.lineTo(x + barW, y + bH);
+      ctx.lineTo(x, y + bH);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+    } else {
+      ctx.rect(x, y, barW, bH);
+    }
+    ctx.closePath();
     ctx.fill();
     // Label
     if (labels[i] !== '') {
@@ -2450,7 +2467,7 @@ function toggleDRP() {
   if (!open) {
     panel.classList.add('open'); btn.classList.add('open');
     if (!DRP.dash.start) drpInit('dash','mes_atual');
-    DRP.dash.tempStart = DRP.dash.start; DRP.dash.tempEnd = DRP.dash.end;
+    DRP.dash.tempStart = DRP.dash.start; DRP.dash.tempEnd = DRP.dash.end; DRP.dash.picking = 0;
     buildDRPCalendar(DRP.dash, 'drp-months-wrap', 'drp-cal-title');
     updateDRPRangeLabel(DRP.dash, 'drp-range-label');
   }
@@ -2494,7 +2511,7 @@ function toggleDRPVendas() {
   if (!open) {
     panel.classList.add('open'); btn.classList.add('open');
     if (!DRP.vendas.start) drpInit('vendas','mes_atual');
-    DRP.vendas.tempStart = DRP.vendas.start; DRP.vendas.tempEnd = DRP.vendas.end;
+    DRP.vendas.tempStart = DRP.vendas.start; DRP.vendas.tempEnd = DRP.vendas.end; DRP.vendas.picking = 0;
     buildDRPCalendar(DRP.vendas, 'drp-vendas-months-wrap', 'drp-vendas-cal-title');
     updateDRPRangeLabel(DRP.vendas, 'drp-vendas-range-label');
   }
