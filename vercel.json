@@ -7,6 +7,8 @@
     { "src": "/checklist", "dest": "/checklist-script-vendas.html" },
     { "src": "/painel", "dest": "/planilha-guia.html" },
     { "src": "/obrigado", "dest": "/obrigado.html" },
+    { "src": "/obrigado-completo", "dest": "/obrigado-completo.html" },
+    { "src": "/bem-vinda", "dest": "/bem-vinda.html" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
